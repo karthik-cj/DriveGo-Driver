@@ -540,13 +540,13 @@
 .location {
   width: 400px;
   background: #ECF2FF;
-  height: 250px;
+  height: 480px;
   border-radius: 20px;
   padding: 50px;
   padding-top: 5px;
   position: relative;
   left: 36vw;
-  top: 29vh;
+  top: 13.5vh;
   font-size: 28px;
   color: #000;
 }
@@ -562,4 +562,36 @@
   left: 155px;
   bottom: 112px;
   border-radius: 10px;
+}
+
+.request {
+  background: white;
+  height: 75px;
+  padding-left: 25px;
+  padding-right: 25px;
+  border-radius: 15px;
+  width: 361px;
+  position: relative;
+  right: 30px;
+  bottom: 120px;
+}
+
+.tick {
+  cursor: pointer;
+  position: relative;
+  bottom: 65px;
+  left: 220px;
+  width: 35px;
+  height: 35px;
+  color: green;
+}
+
+.cross {
+  cursor: pointer;
+  position: relative;
+  bottom: 65px;
+  left: 240px;
+  width: 35px;
+  height: 35px;
+  color: rgb(255, 50, 50);
 }
