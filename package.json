@@ -16,6 +16,7 @@
     "@moralisweb3/next": "^2.9.0",
     "@mui/icons-material": "^5.11.9",
     "@mui/material": "^5.11.8",
+    "@react-google-maps/api": "^2.18.1",
     "ethers": "^5.7.2",
     "is-online": "^10.0.0",
     "moralis": "^2.12.0",

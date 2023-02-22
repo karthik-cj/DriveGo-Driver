@@ -5,6 +5,8 @@ import Switch from "@mui/material/Switch";
 import Head from "next/head";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
+import { LoadScript, GoogleMap, Marker } from "@react-google-maps/api";
+import { useState, useEffect } from "react";
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
@@ -23,13 +25,85 @@ export async function getServerSideProps(context) {
   };
 }
 
-function Rider() {
-  let addr = "0x9e003FaBD5221e4d7Bb09B068D73F8F94015b4bb";
-  let pick = "Thrissur";
-  let drop = "Fort Kochi";
+const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+const LIBRARIES = ["places"];
+
+function Driver() {
+  // let addr = "0x9e003FaBD5221e4d7Bb09B068D73F8F94015b4bb";
+  // let pick = "Thrissur";
+  // let drop = "Fort Kochi";
+
+  const [currentPlace, setCurrentPlace] = useState("");
+  const [toggle, setToggle] = useState(false);
+  const [currentLatLng, setCurrentLatLng] = useState(null);
+  const [center, setCenter] = useState({ lat: 9.9312, lng: 76.2673 });
+
+  const MarkerToggle = (event) => {
+    if (event.target.checked) {
+      setToggle(true);
+    } else {
+      setToggle(false);
+      setCurrentPlace("");
+      setCurrentLatLng(null);
+    }
+  };
+
+  const MarkerUpdate = () => {
+    if (navigator.geolocation && toggle) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          const geocoder = new window.google.maps.Geocoder();
+          const latLng = new window.google.maps.LatLng(latitude, longitude);
+          geocoder.geocode({ location: latLng }, (results, status) => {
+            if (status === "OK") {
+              if (results[0]) {
+                setCurrentPlace(results[0].formatted_address);
+                setCurrentLatLng({ lat: latitude, lng: longitude });
+                setCenter({ lat: latitude, lng: longitude });
+              } else {
+                console.log("No results found");
+              }
+            } else {
+              console.log(`Geocoder failed due to: ${status}`);
+            }
+          });
+        },
+        () => {
+          console.log("Unable to retrieve location.");
+        }
+      );
+    } else {
+      console.log("Geolocation not supported by browser.");
+    }
+  };
+
+  useEffect(() => {
+    MarkerUpdate();
+  }, [toggle]);
 
   return (
     <div>
+      <div id="mapbox">
+        <LoadScript
+          googleMapsApiKey={GOOGLE_MAPS_API_KEY}
+          libraries={LIBRARIES}
+        >
+          <GoogleMap
+            center={center}
+            zoom={12}
+            mapContainerStyle={{ width: "100%", height: "100%" }}
+            options={{
+              zoomControl: false,
+              streetViewControl: false,
+              mapTypeControl: false,
+              fullscreenControl: false,
+            }}
+          >
+            {currentLatLng && <Marker position={currentLatLng} />}
+          </GoogleMap>
+        </LoadScript>
+      </div>
       <Head>
         <title>DriveGo | Location</title>
       </Head>
@@ -37,15 +111,15 @@ function Rider() {
       <section className="location">
         <h1 style={{ textAlign: "center" }}>Location</h1>
         <p style={{ fontSize: "22px" }}>Disable/Enable :</p>
-        <Switch className="switch" />
+        <Switch className="switch" onChange={MarkerToggle} />
         <p style={{ fontSize: "22px", position: "relative", bottom: "60px" }}>
-          Update Gps :
+          Location :
         </p>
-        <Button variant="contained" className="update">
-          Location
+        <Button variant="contained" className="update" onClick={MarkerUpdate}>
+          Update
         </Button>
-        <h1
-          style={{ textAlign: "center", position: "relative", bottom: "100px" }}
+        {/* <h1
+          style={{ textAlign: "center", position: "relative", bottom: "105px" }}
         >
           Requests
         </h1>
@@ -57,19 +131,10 @@ function Rider() {
           <p style={{ marginTop: "-10px" }}>Dropoff : {drop}</p>
           <CheckCircleOutlinedIcon className="tick" />
           <CancelOutlinedIcon className="cross" />
-        </div>
-        <div className="request" style={{ fontSize: "16px" }}>
-          <p style={{ paddingTop: "9px" }}>
-            From : {addr.slice(0, 5)}....{addr.slice(37)}
-          </p>
-          <p style={{ marginTop: "-10px" }}>Pickup : {pick}</p>
-          <p style={{ marginTop: "-10px" }}>Dropoff : {drop}</p>
-          <CheckCircleOutlinedIcon className="tick" />
-          <CancelOutlinedIcon className="cross" />
-        </div>
+        </div> */}
       </section>
     </div>
   );
 }
 
-export default Rider;
+export default Driver;
