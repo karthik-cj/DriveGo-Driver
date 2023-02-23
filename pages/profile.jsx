@@ -2,8 +2,8 @@ import { getSession, signOut } from "next-auth/react";
 import Navbar from "../components/Navbar";
 import ProfileElement from "../components/ProfileElement";
 import Head from "next/head";
-// import { useEffect, useState } from "react";
-// import { retrieveUserInformation } from "../services/blockchain";
+import { useEffect, useState } from "react";
+import { retrieveDriverInformation } from "../services/blockchain";
 import { CircularProgress } from "@mui/material";
 
 export async function getServerSideProps(context) {
@@ -22,15 +22,14 @@ export async function getServerSideProps(context) {
 }
 
 const Profile = ({ user }) => {
-  let userInfo = "abc";
-  // const [userInfo, setUserInfo] = useState(null);
+  const [driverInfo, setDriverInfo] = useState(null);
 
-  // useEffect(() => {
-  //   getInfo();
-  //   async function getInfo() {
-  //     setUserInfo(await retrieveUserInformation());
-  //   }
-  // }, []);
+  useEffect(() => {
+    getInfo();
+    async function getInfo() {
+      setDriverInfo(await retrieveDriverInformation());
+    }
+  }, []);
 
   return (
     <div>
@@ -40,15 +39,17 @@ const Profile = ({ user }) => {
       <Navbar />
       <ProfileElement />
       <div id="profile">
-        {userInfo === null ? (
+        {driverInfo === null ? (
           <CircularProgress className="profileProgress" />
         ) : (
           <div>
             <div className="image">
               <img src="/login.png" width={45} />
             </div>
-            {/* <h1 className="profile_name">{userInfo[0]}</h1>
-            <h3 className="profile_no">+91 {parseInt(userInfo[1]._hex, 16)}</h3> */}
+            <h1 className="profile_name">{driverInfo[0]}</h1>
+            <h3 className="profile_no">
+              +91 {parseInt(driverInfo[1]._hex, 16)}
+            </h3>
             <br />
             <br />
             <label>Identification</label>

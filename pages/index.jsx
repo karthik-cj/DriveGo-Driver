@@ -3,10 +3,14 @@ import { getSession } from "next-auth/react";
 import Button from "@mui/material/Button";
 import Switch from "@mui/material/Switch";
 import Head from "next/head";
-import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
-import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
+// import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
+// import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import { LoadScript, GoogleMap, Marker } from "@react-google-maps/api";
 import { useState, useEffect } from "react";
+import {
+  setDriverLocation,
+  deleteDriverLocation,
+} from "../services/blockchain";
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
@@ -38,10 +42,11 @@ function Driver() {
   const [currentLatLng, setCurrentLatLng] = useState(null);
   const [center, setCenter] = useState({ lat: 9.9312, lng: 76.2673 });
 
-  const MarkerToggle = (event) => {
+  const MarkerToggle = async (event) => {
     if (event.target.checked) {
       setToggle(true);
     } else {
+      await deleteDriverLocation();
       setToggle(false);
       setCurrentPlace("");
       setCurrentLatLng(null);
@@ -55,12 +60,15 @@ function Driver() {
           const { latitude, longitude } = position.coords;
           const geocoder = new window.google.maps.Geocoder();
           const latLng = new window.google.maps.LatLng(latitude, longitude);
-          geocoder.geocode({ location: latLng }, (results, status) => {
+          geocoder.geocode({ location: latLng }, async (results, status) => {
             if (status === "OK") {
               if (results[0]) {
                 setCurrentPlace(results[0].formatted_address);
                 setCurrentLatLng({ lat: latitude, lng: longitude });
                 setCenter({ lat: latitude, lng: longitude });
+                await setDriverLocation({
+                  location: results[0].formatted_address,
+                });
               } else {
                 console.log("No results found");
               }
@@ -91,7 +99,7 @@ function Driver() {
         >
           <GoogleMap
             center={center}
-            zoom={12}
+            zoom={13}
             mapContainerStyle={{ width: "100%", height: "100%" }}
             options={{
               zoomControl: false,
