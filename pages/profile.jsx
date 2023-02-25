@@ -3,8 +3,13 @@ import Navbar from "../components/Navbar";
 import ProfileElement from "../components/ProfileElement";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { retrieveDriverInformation } from "../services/blockchain";
+import {
+  retrieveDriverInformation,
+  deleteDriverLocation,
+} from "../services/blockchain";
 import { CircularProgress } from "@mui/material";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
@@ -23,9 +28,12 @@ export async function getServerSideProps(context) {
 
 const Profile = ({ user }) => {
   const [driverInfo, setDriverInfo] = useState(null);
+  const [alertOpen, setAlertOpen] = useState(false);
 
   useEffect(() => {
-    getInfo();
+    if (window.ethereum.selectedAddress === null) {
+      setAlertOpen(true);
+    } else getInfo();
     async function getInfo() {
       setDriverInfo(await retrieveDriverInformation());
     }
@@ -33,6 +41,21 @@ const Profile = ({ user }) => {
 
   return (
     <div>
+      <Snackbar
+        open={alertOpen}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        style={{ marginTop: "40px" }}
+      >
+        <Alert
+          severity="error"
+          sx={{ width: "100%", fontWeight: "bold", fontFamily: "Josefin Sans" }}
+          onClose={() => {
+            setAlertOpen(false);
+          }}
+        >
+          Connect To Metamask Wallet !!!
+        </Alert>
+      </Snackbar>
       <Head>
         <title>DriveGo | Profile</title>
       </Head>
@@ -47,9 +70,7 @@ const Profile = ({ user }) => {
               <img src="/login.png" width={45} />
             </div>
             <h1 className="profile_name">{driverInfo[0]}</h1>
-            <h3 className="profile_no">
-              +91 {parseInt(driverInfo[1]._hex, 16)}
-            </h3>
+            <h3 className="profile_no">+91 {driverInfo[1]}</h3>
             <br />
             <br />
             <label>Identification</label>
@@ -64,7 +85,10 @@ const Profile = ({ user }) => {
             <p>{user.nonce}</p>
             <button
               className="logout"
-              onClick={() => signOut({ redirect: "/signin" })}
+              onClick={async () => {
+                await deleteDriverLocation();
+                signOut({ redirect: "/signin" });
+              }}
             >
               Sign Out
             </button>

@@ -2,33 +2,26 @@ import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { signIn } from "next-auth/react";
 import { useAccount, useConnect, useSignMessage, useDisconnect } from "wagmi";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import { useAuthRequestChallengeEvm } from "@moralisweb3/next";
 import isOnline from "is-online";
 import Head from "next/head";
-import { useState } from "react";
-import { setDriverInformation } from "../services/blockchain";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 function SignIn() {
-  const [inputName, setinputName] = useState("");
-  const [inputPhone, setinputPhone] = useState("");
-
   const { connectAsync } = useConnect();
   const { disconnectAsync } = useDisconnect();
   const { isConnected } = useAccount();
   const { signMessageAsync } = useSignMessage();
   const { requestChallengeAsync } = useAuthRequestChallengeEvm();
   const { push } = useRouter();
-
-  const handleAuth = async () => {
-    await handleRider();
-    setTimeout(async function () {
-      await setDriverInformation({ name: inputName, phone: inputPhone });
-    }, 1000);
-  };
+  const [connectInternet, setConnectInternet] = useState(false);
+  const [alertOpen, setAlertOpen] = useState(false);
 
   const handleRider = async () => {
     if (!(await isOnline())) {
-      alert("Connect To Internet");
+      setConnectInternet(true);
     } else {
       if (isConnected) {
         await disconnectAsync();
@@ -53,37 +46,49 @@ function SignIn() {
         });
         push(url);
       } catch (error) {
-        alert("User rejected request");
+        setAlertOpen(true);
       }
     }
   };
 
   return (
     <div className="loginBaground">
+      <Snackbar
+        open={connectInternet}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          severity="error"
+          sx={{ width: "100%", fontWeight: "bold", fontFamily: "Josefin Sans" }}
+          onClose={() => {
+            setConnectInternet(false);
+          }}
+        >
+          Connect To Internet !!!
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={alertOpen}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          severity="error"
+          sx={{ width: "100%", fontWeight: "bold", fontFamily: "Josefin Sans" }}
+          onClose={() => {
+            setAlertOpen(false);
+          }}
+        >
+          User Rejects Request !!!
+        </Alert>
+      </Snackbar>
       <Head>
         <title>DriveGo | Authenticate</title>
       </Head>
       <div className="login-box">
         <h2>Driver</h2>
         <h2 style={{ marginTop: "-20px" }}>Authentication</h2>
-        <form>
-          <div className="user-box">
-            <input
-              type="text"
-              placeholder="Username"
-              value={inputName}
-              onChange={(e) => setinputName(e.target.value)}
-            />
-          </div>
-          <div className="user-box">
-            <input
-              type="text"
-              placeholder="Phone Number"
-              value={inputPhone}
-              onChange={(e) => setinputPhone(e.target.value)}
-            />
-          </div>
-          <a onClick={handleAuth}>
+        <form style={{ position: "relative", left: "95px", bottom: "30px" }}>
+          <a onClick={handleRider}>
             <span></span>
             <span></span>
             <span></span>

@@ -2,14 +2,31 @@ import Navbar from "../components/Navbar";
 import { getSession } from "next-auth/react";
 import Button from "@mui/material/Button";
 import Switch from "@mui/material/Switch";
+import TextField from "@mui/material/TextField";
 import Head from "next/head";
-// import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
-// import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
+import Divider from "@mui/material/Divider";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import Box from "@mui/material/Box";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import DialogTitle from "@mui/material/DialogTitle";
+import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
+import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import { LoadScript, GoogleMap, Marker } from "@react-google-maps/api";
 import { useState, useEffect } from "react";
 import {
   setDriverLocation,
   deleteDriverLocation,
+} from "../services/blockchain";
+import {
+  retrieveDriverInformation,
+  setDriverInformation,
 } from "../services/blockchain";
 
 export async function getServerSideProps(context) {
@@ -33,14 +50,24 @@ const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 const LIBRARIES = ["places"];
 
 function Driver() {
-  // let addr = "0x9e003FaBD5221e4d7Bb09B068D73F8F94015b4bb";
-  // let pick = "Thrissur";
-  // let drop = "Fort Kochi";
+  let addr = "0x9e003FaBD5221e4d7Bb09B068D73F8F94015b4bb";
+  let pick = "Thrissur";
+  let drop = "Fort Kochi";
 
   const [currentPlace, setCurrentPlace] = useState("");
   const [toggle, setToggle] = useState(false);
   const [currentLatLng, setCurrentLatLng] = useState(null);
   const [center, setCenter] = useState({ lat: 9.9312, lng: 76.2673 });
+  const [open, setOpen] = useState(false);
+  const [type, setType] = useState("");
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [aadharNumber, setAadharNumber] = useState("");
+  const [vehicleNumber, setVehicleNumber] = useState("");
+  const [license, setLicense] = useState("");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [rcbook, setRcBook] = useState("");
+  const [vehicleName, setVehicleName] = useState("");
 
   const MarkerToggle = async (event) => {
     if (event.target.checked) {
@@ -90,8 +117,224 @@ function Driver() {
     MarkerUpdate();
   }, [toggle]);
 
+  useEffect(() => {
+    if (window.ethereum.selectedAddress === null) {
+      setAlertOpen(true);
+    } else retrieve();
+
+    async function retrieve() {
+      let details = await retrieveDriverInformation();
+      console.log(details);
+      if (!details[0]) setOpen(true);
+    }
+  }, []);
+
   return (
     <div>
+      <Snackbar
+        open={alertOpen}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        style={{ marginTop: "40px" }}
+      >
+        <Alert
+          severity="error"
+          sx={{ width: "100%", fontWeight: "bold", fontFamily: "Josefin Sans" }}
+          onClose={() => {
+            setAlertOpen(false);
+          }}
+        >
+          Connect To Metamask Wallet !!!
+        </Alert>
+      </Snackbar>
+      <Dialog
+        style={{ marginTop: "45px" }}
+        open={open}
+        onClose={async () => {
+          if (name && phone && license) {
+            setOpen(false);
+            await setDriverInformation({
+              name,
+              phone,
+              model: type,
+              vehicleNumber,
+              rcBook: rcbook,
+              license,
+              vehicleName,
+              aadhar: aadharNumber,
+            });
+          }
+        }}
+      >
+        <DialogTitle
+          style={{
+            fontFamily: "Josefin Sans",
+            fontWeight: "700",
+            fontSize: "30px",
+            textAlign: "center",
+          }}
+        >
+          Driver Details
+        </DialogTitle>
+        <Divider />
+        <DialogContent>
+          <TextField
+            id="outlined-basic"
+            label="Driver's Name"
+            variant="outlined"
+            style={{
+              width: "250px",
+              margin: "10px",
+              marginLeft: "13.5px",
+            }}
+            value={name}
+            onChange={(event) => {
+              setName(event.target.value);
+            }}
+          />
+          <TextField
+            id="outlined-basic"
+            label="Driver's Phone"
+            variant="outlined"
+            style={{
+              width: "250px",
+              margin: "10px",
+              marginLeft: "13.5px",
+            }}
+            value={phone}
+            onChange={(event) => {
+              setPhone(event.target.value);
+            }}
+          />
+          <TextField
+            id="outlined-basic"
+            label="Aadhar Number"
+            variant="outlined"
+            style={{
+              width: "250px",
+              margin: "10px",
+              marginLeft: "13.5px",
+            }}
+            value={aadharNumber}
+            onChange={(event) => {
+              setAadharNumber(event.target.value);
+            }}
+          />
+
+          <TextField
+            id="outlined-basic"
+            label="Vehicle Number"
+            variant="outlined"
+            style={{
+              width: "250px",
+              margin: "10px",
+              marginLeft: "13.5px",
+            }}
+            value={vehicleNumber}
+            onChange={(event) => {
+              setVehicleNumber(event.target.value);
+            }}
+          />
+          <TextField
+            id="outlined-basic"
+            label="Vehicle Model"
+            variant="outlined"
+            style={{
+              width: "250px",
+              margin: "10px",
+              marginLeft: "13.5px",
+            }}
+            value={vehicleName}
+            onChange={(event) => {
+              setVehicleName(event.target.value);
+            }}
+          />
+          <TextField
+            id="outlined-basic"
+            label="RC Number"
+            variant="outlined"
+            style={{
+              width: "250px",
+              margin: "10px",
+              marginLeft: "13.5px",
+            }}
+            value={rcbook}
+            onChange={(event) => {
+              setRcBook(event.target.value);
+            }}
+          />
+          <Box>
+            <FormControl
+              style={{
+                width: "250px",
+                margin: "10px",
+                marginLeft: "13.5px",
+              }}
+            >
+              <InputLabel id="demo-simple-select-label">Type</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={type}
+                label="Age"
+                onChange={(event) => {
+                  setType(event.target.value);
+                }}
+              >
+                <MenuItem value={"Classic"}>Classic</MenuItem>
+                <MenuItem value={"Premium"}>Premium</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+          <TextField
+            id="outlined-basic"
+            label="Driving License"
+            variant="outlined"
+            style={{
+              width: "250px",
+              margin: "10px",
+              marginLeft: "13.5px",
+            }}
+            value={license}
+            onChange={(event) => {
+              setLicense(event.target.value);
+            }}
+          />
+        </DialogContent>
+        <Divider />
+        <DialogActions>
+          <Button
+            variant="contained"
+            size="large"
+            onClick={async () => {
+              if (name && phone && license) {
+                setOpen(false);
+                await setDriverInformation({
+                  name,
+                  phone,
+                  model: type,
+                  vehicleNumber,
+                  rcBook: rcbook,
+                  license,
+                  vehicleName,
+                  aadhar: aadharNumber,
+                });
+              }
+            }}
+            style={{
+              fontFamily: "Josefin Sans",
+              marginTop: "30px",
+              position: "relative",
+              right: "18px",
+              paddingTop: "14px",
+              bottom: "15px",
+              width: "120px",
+              borderRadius: "10px",
+            }}
+          >
+            Submit
+          </Button>
+        </DialogActions>
+      </Dialog>
       <div id="mapbox">
         <LoadScript
           googleMapsApiKey={GOOGLE_MAPS_API_KEY}
@@ -126,7 +369,7 @@ function Driver() {
         <Button variant="contained" className="update" onClick={MarkerUpdate}>
           Update
         </Button>
-        {/* <h1
+        <h1
           style={{ textAlign: "center", position: "relative", bottom: "105px" }}
         >
           Requests
@@ -137,9 +380,18 @@ function Driver() {
           </p>
           <p style={{ marginTop: "-10px" }}>Pickup : {pick}</p>
           <p style={{ marginTop: "-10px" }}>Dropoff : {drop}</p>
-          <CheckCircleOutlinedIcon className="tick" />
-          <CancelOutlinedIcon className="cross" />
-        </div> */}
+          <CheckCircleOutlinedIcon className="tick" fontSize="large" />
+          <CancelOutlinedIcon className="cross" fontSize="large" />
+        </div>
+        <div className="request" style={{ fontSize: "16px" }}>
+          <p style={{ paddingTop: "9px" }}>
+            From : {addr.slice(0, 5)}....{addr.slice(37)}
+          </p>
+          <p style={{ marginTop: "-10px" }}>Pickup : {pick}</p>
+          <p style={{ marginTop: "-10px" }}>Dropoff : {drop}</p>
+          <CheckCircleOutlinedIcon className="tick" fontSize="large" />
+          <CancelOutlinedIcon className="cross" fontSize="large" />
+        </div>
       </section>
     </div>
   );

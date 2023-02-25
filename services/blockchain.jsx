@@ -20,11 +20,11 @@ const getEtheriumContract = async () => {
   return contract;
 };
 
-const setDriverInformation = async ({ name, phone }) => {
+const setDriverInformation = async ({ name, phone, model, vehicleNumber, rcBook, license, vehicleName, aadhar }) => {
   try {
     if (!ethereum) return alert("No Wallet Found");
     const contract = await getEtheriumContract();
-    await contract.setDriverInformation(name, phone);
+    await contract.setDriverInformation(name, phone, model, vehicleNumber, rcBook, license, vehicleName, aadhar);
   } catch (error) {
     reportError(error);
   }
@@ -65,9 +65,4 @@ const reportError = (error) => {
   console.error(error.message);
 };
 
-export {
-  setDriverInformation,
-  retrieveDriverInformation,
-  setDriverLocation,
-  deleteDriverLocation,
-};
+export { setDriverInformation, retrieveDriverInformation, setDriverLocation, deleteDriverLocation };

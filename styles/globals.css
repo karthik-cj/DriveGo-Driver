@@ -34,6 +34,7 @@
       top: 50%;
       left: 50%;
       width: 400px;
+      height: 220px;
       padding: 40px;
       transform: translate(-50%, -50%);
       background: rgba(0,0,0,.5);
@@ -48,28 +49,6 @@
       padding: 0;
       color: #fff;
       text-align: center;
-    }
-    
-    .login-box .user-box {
-      position: relative;
-    }
-    
-    .login-box .user-box input {
-      letter-spacing: 0.8px;
-      width: 100%;
-      padding: 10px 0;
-      font-size: 16px;
-      color: #fff;
-      margin-bottom: 30px;
-      border: none;
-      border-bottom: 1px solid #fff;
-      outline: none;
-      background: transparent;
-    }
-    
-    .login-box .user-box input::placeholder {
-      font-family: "Josefin Sans";
-      color: #03e9f4;
     }
 
     .login-box form a {
@@ -540,13 +519,13 @@
 .location {
   width: 400px;
   background: white;
-  height: 230px;
+  height: 473px;
   border-radius: 20px;
   padding: 50px;
   padding-top: 5px;
   position: absolute;
   left: 8vw;
-  top: 36vh;
+  top: 20vh;
   font-size: 28px;
   color: #000;
 }
@@ -584,8 +563,6 @@
   position: relative;
   bottom: 65px;
   left: 220px;
-  width: 35px;
-  height: 35px;
   color: green;
 }
 
@@ -594,8 +571,6 @@
   position: relative;
   bottom: 65px;
   left: 240px;
-  width: 35px;
-  height: 35px;
   color: rgb(255, 50, 50);
 }
 
