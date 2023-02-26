@@ -9,7 +9,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CircularProgress } from "@mui/material";
 import { CardActionArea } from "@mui/material";
-import Divider from "@mui/material/Divider";
+import { Divider } from "@mui/material";
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
