@@ -531,9 +531,13 @@
 }
 
 .switch {
+  font-family: "Josefin Sans";
+  padding-top: 9px;
   position: relative;
-  left: 180px;
-  bottom: 52px;
+  height: 35px;
+  left: 105px;
+  bottom: 50px;
+  border-radius: 10px;
 }
 
 .update {
@@ -542,7 +546,7 @@
   position: relative;
   height: 35px;
   left: 115px;
-  bottom: 112px;
+  bottom: 100px;
   border-radius: 10px;
 }
 

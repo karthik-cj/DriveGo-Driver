@@ -55,7 +55,6 @@ function Driver() {
   let drop = "Fort Kochi";
 
   const [currentPlace, setCurrentPlace] = useState("");
-  const [toggle, setToggle] = useState(false);
   const [currentLatLng, setCurrentLatLng] = useState(null);
   const [center, setCenter] = useState({ lat: 9.9312, lng: 76.2673 });
   const [open, setOpen] = useState(false);
@@ -69,19 +68,13 @@ function Driver() {
   const [rcbook, setRcBook] = useState("");
   const [vehicleName, setVehicleName] = useState("");
 
-  const MarkerToggle = async (event) => {
-    if (event.target.checked) {
-      setToggle(true);
-    } else {
-      await deleteDriverLocation();
-      setToggle(false);
-      setCurrentPlace("");
-      setCurrentLatLng(null);
-    }
+  const DeleteLocation = async (event) => {
+    await deleteDriverLocation();
+    setCurrentLatLng(null);
   };
 
   const MarkerUpdate = () => {
-    if (navigator.geolocation && toggle) {
+    if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
@@ -112,10 +105,6 @@ function Driver() {
       console.log("Geolocation not supported by browser.");
     }
   };
-
-  useEffect(() => {
-    MarkerUpdate();
-  }, [toggle]);
 
   useEffect(() => {
     if (window.ethereum.selectedAddress === null) {
@@ -359,13 +348,25 @@ function Driver() {
       <Navbar />
       <section className="location">
         <h1 style={{ textAlign: "center" }}>Location</h1>
-        <p style={{ fontSize: "22px" }}>Disable/Enable :</p>
-        <Switch className="switch" onChange={MarkerToggle} />
-        <p style={{ fontSize: "22px", position: "relative", bottom: "60px" }}>
+        <p style={{ fontSize: "22px" }}>Update :</p>
+        <Button
+          variant="contained"
+          color="success"
+          className="switch"
+          onClick={MarkerUpdate}
+        >
+          Location
+        </Button>
+        <p style={{ fontSize: "22px", position: "relative", bottom: "50px" }}>
           Location :
         </p>
-        <Button variant="contained" className="update" onClick={MarkerUpdate}>
-          Update
+        <Button
+          variant="contained"
+          color="error"
+          className="update"
+          onClick={DeleteLocation}
+        >
+          Delete
         </Button>
         <h1
           style={{ textAlign: "center", position: "relative", bottom: "105px" }}
