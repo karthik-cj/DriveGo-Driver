@@ -108,12 +108,44 @@ function Driver() {
     }
   };
 
+  const ShowMarker = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          const geocoder = new window.google.maps.Geocoder();
+          const latLng = new window.google.maps.LatLng(latitude, longitude);
+          geocoder.geocode({ location: latLng }, async (results, status) => {
+            if (status === "OK") {
+              if (results[0]) {
+                setCurrentPlace(results[0].formatted_address);
+                setCurrentLatLng({ lat: latitude, lng: longitude });
+                setCenter({ lat: latitude, lng: longitude });
+              } else {
+                console.log("No results found");
+              }
+            } else {
+              console.log(`Geocoder failed due to: ${status}`);
+            }
+          });
+        },
+        () => {
+          console.log("Unable to retrieve location.");
+        }
+      );
+    } else {
+      console.log("Geolocation not supported by browser.");
+    }
+  };
+
   useEffect(() => {
     if (window.ethereum.selectedAddress === null) {
       setAlertOpen(true);
     } else retrieve();
+
     async function retrieve() {
       let details = await retrieveDriverInformation();
+      if (details[2]) ShowMarker();
       if (!details[0]) setOpen(true);
     }
   }, []);
