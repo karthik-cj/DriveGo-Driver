@@ -567,7 +567,7 @@
   position: relative;
   bottom: 65px;
   left: 220px;
-  color: green;
+  color: rgba(0, 0, 0, 0.897);
 }
 
 .cross {
@@ -575,7 +575,7 @@
   position: relative;
   bottom: 65px;
   left: 240px;
-  color: rgb(255, 50, 50);
+  color: rgba(0, 0, 0, 0.897);
 }
 
 #mapbox{
@@ -587,4 +587,14 @@
 
 #map{
   height: 100%;
+}
+
+:root {
+  --rsbs-backdrop-bg: rgba(0, 0, 0, 0.6);
+  --rsbs-bg: #fff;
+  --rsbs-handle-bg: hsla(0, 0%, 0%, 0.14);
+  --rsbs-max-w: 400px;
+  --rsbs-ml: 65vw;
+  --rsbs-mr: env(safe-area-inset-right);
+  --rsbs-overlay-rounded: 16px;
 }

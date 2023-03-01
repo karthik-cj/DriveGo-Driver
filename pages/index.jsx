@@ -1,7 +1,6 @@
 import Navbar from "../components/Navbar";
 import { getSession } from "next-auth/react";
 import Button from "@mui/material/Button";
-import Switch from "@mui/material/Switch";
 import TextField from "@mui/material/TextField";
 import Head from "next/head";
 import Divider from "@mui/material/Divider";
@@ -28,6 +27,8 @@ import {
   retrieveDriverInformation,
   setDriverInformation,
 } from "../services/blockchain";
+import { BottomSheet } from "react-spring-bottom-sheet";
+import "react-spring-bottom-sheet/dist/style.css";
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
@@ -67,6 +68,7 @@ function Driver() {
   const [phone, setPhone] = useState("");
   const [rcbook, setRcBook] = useState("");
   const [vehicleName, setVehicleName] = useState("");
+  const [bottomSheet, setBottomSheet] = useState(false);
 
   const DeleteLocation = async (event) => {
     await deleteDriverLocation();
@@ -392,6 +394,16 @@ function Driver() {
           <CancelOutlinedIcon className="cross" fontSize="large" />
         </div>
       </section>
+      <button onClick={() => setBottomSheet(true)}>Open bottom sheet</button>
+      <BottomSheet
+        style={{ color: "black" }}
+        open={bottomSheet}
+        onDismiss={() => {
+          setBottomSheet(false);
+        }}
+      >
+        <h1 style={{ margin: "20px" }}>Ongoing Rides</h1>
+      </BottomSheet>
     </div>
   );
 }
