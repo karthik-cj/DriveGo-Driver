@@ -3,10 +3,7 @@ import Navbar from "../components/Navbar";
 import ProfileElement from "../components/ProfileElement";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import {
-  retrieveDriverInformation,
-  deleteDriverLocation,
-} from "../services/blockchain";
+import { retrieveDriverInformation } from "../services/blockchain";
 import { CircularProgress } from "@mui/material";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
@@ -85,8 +82,7 @@ const Profile = ({ user }) => {
             <p>{user.nonce}</p>
             <button
               className="logout"
-              onClick={async () => {
-                await deleteDriverLocation();
+              onClick={() => {
                 signOut({ redirect: "/signin" });
               }}
             >
