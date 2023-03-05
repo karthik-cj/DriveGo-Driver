@@ -538,6 +538,13 @@
   left: 105px;
   bottom: 50px;
   border-radius: 10px;
+  box-shadow: none;
+}
+
+.switch:hover {
+  background:#ebebeb;
+  box-shadow: none;
+  color: black;
 }
 
 .update {
@@ -548,10 +555,17 @@
   left: 115px;
   bottom: 100px;
   border-radius: 10px;
+  box-shadow: none;
+}
+
+.update:hover {
+  background:#ebebeb;
+  box-shadow: none;
+  color: black;
 }
 
 .request {
-  background: rgb(235, 235, 235);
+  background: #ebebeb;
   height: 75px;
   padding-left: 25px;
   padding-right: 25px;

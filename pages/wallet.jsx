@@ -78,7 +78,10 @@ const Wallet = ({ userBal, user }) => {
           {Math.floor(parseInt(userBal.rawValue, 16) * 1e-18 * 10000) / 10000}{" "}
           ETH
         </h1>
-        <button className="addFund">
+        <button
+          className="addFund"
+          onClick={() => window.open("https://goerlifaucet.com/")}
+        >
           <span>&#43;</span> Add Fund
         </button>
       </div>
