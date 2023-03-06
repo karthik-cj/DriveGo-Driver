@@ -292,7 +292,7 @@ function Driver() {
 
   const [currentPlace, setCurrentPlace] = useState("");
   const [currentLatLng, setCurrentLatLng] = useState(null);
-  const [center, setCenter] = useState({ lat: 9.9312, lng: 76.2673 });
+  const [center, setCenter] = useState({ lat: 9.9312, lng: 76.2499 });
   const [open, setOpen] = useState(false);
   const [type, setType] = useState("");
   const [alertOpen, setAlertOpen] = useState(false);
@@ -304,6 +304,10 @@ function Driver() {
   const [rcbook, setRcBook] = useState("");
   const [vehicleName, setVehicleName] = useState("");
   const [bottomSheet, setBottomSheet] = useState(false);
+  const icon = {
+    url: "/mapicon.png",
+    scaledSize: { width: 60, height: 60 },
+  };
 
   const DeleteLocation = async (event) => {
     await deleteDriverLocation();
@@ -598,7 +602,7 @@ function Driver() {
         >
           <GoogleMap
             center={center}
-            zoom={13}
+            zoom={15}
             mapContainerStyle={{ width: "100%", height: "100%" }}
             options={{
               zoomControl: false,
@@ -608,7 +612,7 @@ function Driver() {
               styles: mapOptions.styles,
             }}
           >
-            {currentLatLng && <Marker position={currentLatLng} />}
+            {currentLatLng && <Marker position={currentLatLng} icon={icon} />}
           </GoogleMap>
         </LoadScript>
       </div>

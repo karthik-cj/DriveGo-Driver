@@ -1,5 +1,5 @@
-import abi from "../../drivego-blockchain/abis/contracts/UserDetails.sol/UserDetails.json";
-import address from "../../drivego-blockchain/abis/contractAddress.json";
+import abi from "../constants/UserDetails.json";
+import address from "../constants/contractAddress.json";
 import { ethers } from "ethers";
 
 let ethereum;
@@ -20,11 +20,29 @@ const getEtheriumContract = async () => {
   return contract;
 };
 
-const setDriverInformation = async ({ name, phone, model, vehicleNumber, rcBook, license, vehicleName, aadhar }) => {
+const setDriverInformation = async ({
+  name,
+  phone,
+  model,
+  vehicleNumber,
+  rcBook,
+  license,
+  vehicleName,
+  aadhar,
+}) => {
   try {
     if (!ethereum) return alert("No Wallet Found");
     const contract = await getEtheriumContract();
-    await contract.setDriverInformation(name, phone, model, vehicleNumber, rcBook, license, vehicleName, aadhar);
+    await contract.setDriverInformation(
+      name,
+      phone,
+      model,
+      vehicleNumber,
+      rcBook,
+      license,
+      vehicleName,
+      aadhar
+    );
   } catch (error) {
     reportError(error);
   }
@@ -65,4 +83,9 @@ const reportError = (error) => {
   console.error(error.message);
 };
 
-export { setDriverInformation, retrieveDriverInformation, setDriverLocation, deleteDriverLocation };
+export {
+  setDriverInformation,
+  retrieveDriverInformation,
+  setDriverLocation,
+  deleteDriverLocation,
+};
