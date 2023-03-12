@@ -1,7 +1,7 @@
 import Navbar from "../components/Navbar";
 import ProfileElement from "../components/ProfileElement";
-import { getSession } from "next-auth/react";
-import { useState } from "react";
+import { getSession, signOut } from "next-auth/react";
+import { useState, useEffect } from "react";
 import Head from "next/head";
 
 export async function getServerSideProps(context) {
@@ -51,6 +51,14 @@ const Trips = () => {
     setActiveTab("tab3");
   };
 
+  useEffect(() => {
+    window.ethereum.on("accountsChanged", function (accounts) {
+      if (accounts.length === 0) {
+        signOut({ redirect: "/signin" });
+      }
+    });
+  }, []);
+
   return (
     <div>
       <Head>
@@ -59,30 +67,33 @@ const Trips = () => {
       <Navbar />
       <ProfileElement />
       <h1 className="tripHeading">My Trips</h1>
-      <div
-        className="select_month"
-        onClick={handleTab1}
-        id={activeTab === "tab1" ? "active" : ""}
-        style={{ left: "410px" }}
-      >
-        <p>All Trips</p>
+      <div className="monthBox">
+        <div
+          className="select_month"
+          onClick={handleTab1}
+          id={activeTab === "tab1" ? "active" : ""}
+          style={{ left: "410px" }}
+        >
+          <p>All Trips</p>
+        </div>
+        <div
+          className="select_month"
+          onClick={handleTab2}
+          id={activeTab === "tab2" ? "active" : ""}
+          style={{ left: "517px" }}
+        >
+          <p>{thisMonth}</p>
+        </div>
+        <div
+          className="select_month"
+          onClick={handleTab3}
+          id={activeTab === "tab3" ? "active" : ""}
+          style={{ left: "625px" }}
+        >
+          <p>{prevMonth}</p>
+        </div>
       </div>
-      <div
-        className="select_month"
-        onClick={handleTab2}
-        id={activeTab === "tab2" ? "active" : ""}
-        style={{ left: "517px" }}
-      >
-        <p>{thisMonth}</p>
-      </div>
-      <div
-        className="select_month"
-        onClick={handleTab3}
-        id={activeTab === "tab3" ? "active" : ""}
-        style={{ left: "625px" }}
-      >
-        <p>{prevMonth}</p>
-      </div>
+
       <div id="tripBox"></div>
     </div>
   );

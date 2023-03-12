@@ -21,416 +21,481 @@
     box-sizing: border-box;
   }
 
-    .loginBaground{
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      font-family: "Josefin Sans";
-      background: linear-gradient(#141e30, #243b55);
-    }
-
-    .login-box {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 400px;
-      height: 220px;
-      padding: 40px;
-      transform: translate(-50%, -50%);
-      background: rgba(0,0,0,.5);
-      box-sizing: border-box;
-      box-shadow: 0 15px 25px rgba(0,0,0,.6);
-      border-radius: 10px;
-    }
-    
-    .login-box h2 {
-      margin: 0 0 30px;
-      letter-spacing: 1.8px;
-      padding: 0;
-      color: #fff;
-      text-align: center;
-    }
-
-    .login-box form a {
-      position: relative;
-      display: inline-block;
-      padding: 10px 20px;
-      color: #03e9f4;
-      font-size: 16px;
-      text-decoration: none;
-      text-transform: uppercase;
-      overflow: hidden;
-      transition: .5s;
-      margin-top: 40px;
-      letter-spacing: 4px
-    }
-    
-    .login-box a:hover {
-      cursor: pointer;
-      background: #03e9f4;
-      color: #fff;
-      border-radius: 5px;
-      box-shadow: 0 0 5px #03e9f4,
-                  0 0 25px #03e9f4,
-                  0 0 50px #03e9f4,
-                  0 0 100px #03e9f4;
-    }
-    
-    .login-box a span {
-      position: absolute;
-      display: block;
-    }
-    
-    .login-box a span:nth-child(1) {
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, #03e9f4);
-      animation: btn-anim1 1s linear infinite;
-    }
-    
-    @keyframes btn-anim1 {
-      0% {
-        left: -100%;
-      }
-      50%,100% {
-        left: 100%;
-      }
-    }
-    
-    .login-box a span:nth-child(2) {
-      top: -100%;
-      right: 0;
-      width: 2px;
-      height: 100%;
-      background: linear-gradient(180deg, transparent, #03e9f4);
-      animation: btn-anim2 1s linear infinite;
-      animation-delay: .25s
-    }
-    
-    @keyframes btn-anim2 {
-      0% {
-        top: -100%;
-      }
-      50%,100% {
-        top: 100%;
-      }
-    }
-    
-    .login-box a span:nth-child(3) {
-      bottom: 0;
-      right: -100%;
-      width: 100%;
-      height: 2px;
-      background: linear-gradient(270deg, transparent, #03e9f4);
-      animation: btn-anim3 1s linear infinite;
-      animation-delay: .5s
-    }
-    
-    @keyframes btn-anim3 {
-      0% {
-        right: -100%;
-      }
-      50%,100% {
-        right: 100%;
-      }
-    }
-    
-    .login-box a span:nth-child(4) {
-      bottom: -100%;
-      left: 0;
-      width: 2px;
-      height: 100%;
-      background: linear-gradient(360deg, transparent, #03e9f4);
-      animation: btn-anim4 1s linear infinite;
-      animation-delay: .75s
-    }
-    
-    @keyframes btn-anim4 {
-      0% {
-        bottom: -100%;
-      }
-      50%,100% {
-        bottom: 100%;
-      }
-    }
-    
-
-    #navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(0, 0, 0);
-      height: 51px;
-      width: 100vw;
-      position: relative;
-      z-index: 1;
-    }
-
-    .navlogo {
-      font-family: "Josefin Sans";
-      margin-left: 14vw;
-      position: relative;
-      margin-top: 5px;
-      text-align: center;
-      font-size: 25px;
-      font-weight: 500px;
-    }
-
-    .navlinks-container {
-      display: flex;
-      margin-right: 8vw;
-    }
-
-    .navlink {
-      font-family: "Josefin Sans";
-      position: relative;
-      margin-top: 5px;
-      font-size: 18px;
-      font-weight: 500px;
-      margin-left: 5vw;
-    }
-
-
-  #profile{
-      position: absolute;
-      background: #AEE2FF;
-      top: 50%;
-      left: 43%;
-      width: 510px;
-      margin-top: 24px;
-      height: 575px;
-      border-radius: 20px;
-      padding: 20px;
-      transform: translate(-50%, -50%);
-  }
-
-  .profileProgress {
+  .loginBaground{
     position: absolute;
-    top: 260px;
-    left: 230px;
-    color: white;
-  }
-
-  .image{
-    border-radius: 50%;
-    width: 65px;
-    height: 65px;
-    background: white;
-  }
-
-  .image img{
-    position: relative;
-    left: 9.5px;
-    top: 7px;
-    -webkit-filter: invert(100%); 
-    filter: invert(100%);
-  }
-
-  .profile_name{
-    color: black;
+    width: 100vw;
+    height: 100vh;
     font-family: "Josefin Sans";
+    background: linear-gradient(#141e30, #243b55);
+  }
+
+  .login-box {
     position: absolute;
-    top: 12px;
-    left: 100px;
+    top: 50vh;
+    left: 50vw;
+    height: 220px;
+    width: 400px;
+    padding: 40px;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,.5);
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgba(0,0,0,.6);
+    border-radius: 20px;
+  }
+
+  .login-box h2 {
+    margin: 0 0 30px;
+    letter-spacing: 1.8px;
+    padding: 0;
+    color: #fff;
+    text-align: center;
+  }
+
+  .login-box form a {
+    position: absolute;
+    left: 130px;
+    bottom: 40px;
+    display: inline-block;
+    padding: 10px 20px;
+    color: #03e9f4;
+    font-size: 16px;
+    text-decoration: none;
+    text-transform: uppercase;
+    overflow: hidden;
+    transition: .5s;
+    margin-top: 40px;
+    letter-spacing: 4px
+  }
+
+  .login-box a:hover {
+    cursor: pointer;
+    background: #03e9f4;
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #03e9f4,
+                0 0 25px #03e9f4,
+                0 0 50px #03e9f4,
+                0 0 100px #03e9f4;
+  }
+
+  .login-box a span {
+    position: absolute;
+    display: block;
+  }
+
+  .login-box a span:nth-child(1) {
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #03e9f4);
+    animation: btn-anim1 1s linear infinite;
+  }
+
+  @keyframes btn-anim1 {
+    0% {
+      left: -100%;
+    }
+    50%,100% {
+      left: 100%;
+    }
+  }
+
+  .login-box a span:nth-child(2) {
+    top: -100%;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(180deg, transparent, #03e9f4);
+    animation: btn-anim2 1s linear infinite;
+    animation-delay: .25s
+  }
+
+  @keyframes btn-anim2 {
+    0% {
+      top: -100%;
+    }
+    50%,100% {
+      top: 100%;
+    }
+  }
+
+  .login-box a span:nth-child(3) {
+    bottom: 0;
+    right: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(270deg, transparent, #03e9f4);
+    animation: btn-anim3 1s linear infinite;
+    animation-delay: .5s
+  }
+
+  @keyframes btn-anim3 {
+    0% {
+      right: -100%;
+    }
+    50%,100% {
+      right: 100%;
+    }
+  }
+
+  .login-box a span:nth-child(4) {
+    bottom: -100%;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(360deg, transparent, #03e9f4);
+    animation: btn-anim4 1s linear infinite;
+    animation-delay: .75s
+  }
+
+  @keyframes btn-anim4 {
+    0% {
+      bottom: -100%;
+    }
+    50%,100% {
+      bottom: 100%;
+    }
+  }
+
+  #navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0);
+    height: 51px;
+    width: 100vw;
+    position: relative;
+    z-index: 1;
+  }
+
+  .navlogo {
+    font-family: "Josefin Sans";
+    margin-left: 14vw;
+    position: relative;
+    margin-top: 5px;
     text-align: center;
     font-size: 25px;
     font-weight: 500px;
   }
 
-  .profile_no{
-    color: black;
+  .navlinks-container {
+    display: flex;
+    margin-right: 8vw;
+  }
+
+  .navlink {
     font-family: "Josefin Sans";
-    position: absolute;
-    top: 42px;
-    left: 100px;
-    text-align: center;
+    position: relative;
+    margin-top: 5px;
     font-size: 18px;
-    font-weight: 100;
+    font-weight: 500px;
+    margin-left: 5vw;
+  }
+
+
+  #profile{
+    position: absolute;
+    left: 410px;
+    top: 95px;
+    background: #AEE2FF;
+    width: 510px;
+    height: 575px;
+    border-radius: 20px;
+    padding: 20px;
+  }
+
+  @media (max-width: 1366px) and (max-height: 768px) {
+    #profile{
+      position: absolute;
+      left: 360px;
+      top: 70px;
+      background: #AEE2FF;
+      width: 510px;
+      height: 540px;
+      border-radius: 20px;
+      padding: 20px;
+    }
+  }
+
+  .profileProgress {
+  position: absolute;
+  top: 260px;
+  left: 230px;
+  color: white;
+  }
+
+  .image{
+  border-radius: 50%;
+  width: 65px;
+  height: 65px;
+  background: white;
+  }
+
+  .image img{
+  position: relative;
+  left: 9.5px;
+  top: 7px;
+  -webkit-filter: invert(100%); 
+  filter: invert(100%);
+  }
+
+  .profile_name{
+  color: black;
+  font-family: "Josefin Sans";
+  position: absolute;
+  top: 12px;
+  left: 100px;
+  text-align: center;
+  font-size: 25px;
+  font-weight: 500px;
+  }
+
+  .profile_no{
+  color: black;
+  font-family: "Josefin Sans";
+  position: absolute;
+  top: 42px;
+  left: 100px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 100;
   }
 
   #profile label{
-    color: black;
-    font-family: "Josefin Sans";
-    font-size: large;
-    padding-left: 16px;
+  color: black;
+  font-family: "Josefin Sans";
+  font-size: large;
+  padding-left: 16px;
   }
 
   #profile p{ 
-    color: black;
-    font-family: "Josefin Sans";
-    width: 550px;
-    height: 40px;
-    font-size: larger;
-    padding: 15px;
-    padding-top: 8px;
-    margin-top: 0px;
-    border-radius: 10px;
+  color: black;
+  font-family: "Josefin Sans";
+  width: 550px;
+  height: 40px;
+  font-size: larger;
+  padding: 15px;
+  padding-top: 8px;
+  margin-top: 0px;
+  border-radius: 10px;
   }
 
   .profile_element{
-    position: absolute;
-    left: 120px;
-    top: 10px;
-    margin-top: 100px;
-    color: black;
+  position: absolute;
+  left: 120px;
+  top: 10px;
+  margin-top: 100px;
+  color: black;
+  }
+
+  @media (max-width: 1366px) and (max-height: 768px) {
+    .profile_element{
+      position: absolute;
+      left: 70px;
+      color: black;
+      }
+
+      .logout {
+        background-color: white;
+        border-radius: 10px;
+        border-width: 0;
+        width: 120px;
+        position: relative;
+        bottom: 20px;
+        color: #333333;
+        cursor: pointer;
+        font-family: "Josefin Sans";
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 20px;
+        margin: 0;
+        margin-left: 15px;
+        padding: 10px;
+        padding-top: 12px;
+        text-align: center;
+        transition: all 200ms;
+        vertical-align: baseline;
+        white-space: nowrap;
+        touch-action: manipulation;
+        }
   }
 
   .profile_element h3{
-    color: black;
-    font-family: "Josefin Sans";
-    text-align: left;
-    font-size: 20px;
-    font-weight: lighter;
-    margin: 0px;
-    padding: 13px;
-    padding-top: 15px;
+  color: black;
+  font-family: "Josefin Sans";
+  text-align: left;
+  font-size: 20px;
+  font-weight: lighter;
+  margin: 0px;
+  padding: 13px;
+  padding-top: 15px;
   }
 
   .profile_element div{
-    border-radius: 10px;
-    width: 250px;
-    margin: 8px;
+  border-radius: 10px;
+  width: 250px;
+  margin: 8px;
   }
 
   .profile_element div:hover{
-    background:#cecece ;
-    cursor: pointer;
+  background:#cecece ;
+  cursor: pointer;
   }
 
   .active{
-    background:#cecece ;
+  background:#cecece ;
   }
 
   .logout {
-    background-color: white;
-    border-radius: 10px;
-    border-width: 0;
-    width: 120px;
-    color: #333333;
-    cursor: pointer;
-    display: inline-block;
-    font-family: "Josefin Sans";
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 20px;
-    margin: 0;
-    margin-left: 15px;
-    padding: 10px;
-    padding-top: 12px;
-    text-align: center;
-    transition: all 200ms;
-    vertical-align: baseline;
-    white-space: nowrap;
-    touch-action: manipulation;
+  background-color: white;
+  border-radius: 10px;
+  border-width: 0;
+  width: 120px;
+  color: #333333;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Josefin Sans";
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+  margin: 0;
+  margin-left: 15px;
+  padding: 10px;
+  padding-top: 12px;
+  text-align: center;
+  transition: all 200ms;
+  vertical-align: baseline;
+  white-space: nowrap;
+  touch-action: manipulation;
   }
 
   .logout:hover{
-    background-color: #F55050;
+  background-color: #F55050;
   }
 
   #wallet{
-    position: absolute;
-    font-family:"Josefin Sans" ;
-    color: black;
-    background: #C9F4AA;
-    top: 20%;
-    left: 805px;
-    width:800px;
-    margin-top: 24px;
-    height: 180px;
-    border-radius: 20px;
-    padding: 25px;
-    padding-left: 40px;
-    padding-top: 5px;
-    transform: translate(-50%, -50%);
+  position: absolute;
+  font-family:"Josefin Sans" ;
+  color: black;
+  background: #C9F4AA;
+  top: 20%;
+  left: 785px;
+  width:750px;
+  margin-top: 24px;
+  height: 180px;
+  border-radius: 20px;
+  padding: 25px;
+  padding-left: 40px;
+  padding-top: 5px;
+  transform: translate(-50%, -50%);
+  }
+
+  @media (max-width: 1366px) and (max-height: 768px) {
+    #wallet{
+      position: absolute;
+      font-family:"Josefin Sans" ;
+      color: black;
+      background: #C9F4AA;
+      top: 20%;
+      left: 722px;
+      width:727px;
+      margin-top: 24px;
+      height: 180px;
+      border-radius: 20px;
+      padding: 25px;
+      padding-left: 40px;
+      padding-top: 5px;
+      transform: translate(-50%, -50%);
+      }
   }
 
   .addFund {
-    background-color: #000000;
-    border-radius: 20px;
-    border-width: 0;
-    height: 50px;
-    width: 120px;
-    color: #ffffff;
-    cursor: pointer;
-    display: inline-block;
-    font-family: "Josefin Sans";
-    font-size: 16px;
-    font-weight: bold;
-    line-height: 20px;
-    margin: 0;
-    padding: 10px;
-    padding-top: 12px;
-    text-align: center;
-    transition: all 200ms;
-    vertical-align: baseline;
-    white-space: nowrap;
-    touch-action: manipulation;
+  background-color: #000000;
+  border-radius: 20px;
+  border-width: 0;
+  height: 50px;
+  width: 120px;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Josefin Sans";
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 20px;
+  margin: 0;
+  padding: 10px;
+  padding-top: 12px;
+  text-align: center;
+  transition: all 200ms;
+  vertical-align: baseline;
+  white-space: nowrap;
+  touch-action: manipulation;
   }
 
   .walletHeading{
-    color: black;
-    position: absolute;
-    font-family: "Josefin Sans";
-    left: 409px;
-    top: 280px;
+  color: black;
+  position: absolute;
+  font-family: "Josefin Sans";
+  left: 409px;
+  top: 280px;
   }
 
   #transactions{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    position: absolute;
-    font-family:"Josefin Sans" ;
-    color: rgb(255, 255, 255);
-    top: 330px;
-    left: 405px;
-    width: 900px;
-    margin-top: 24px;
-    padding: 0px;
+  border-radius: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  position: absolute;
+  font-family:"Josefin Sans" ;
+  color: rgb(255, 255, 255);
+  top: 330px;
+  left: 405px;
+  width: 750px;
+  margin-top: 24px;
+  padding: 0px;
   }
 
-  #transactions::-webkit-scrollbar {
-    display: none;
-  }
+  @media (max-width: 1366px) and (max-height: 768px) {
+    #transactions{
+      border-radius: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      position: absolute;
+      font-family:"Josefin Sans" ;
+      color: rgb(255, 255, 255);
+      top: 330px;
+      left: 355px;
+      width: 730px;
+      margin-top: 24px;
+      padding: 0px;
+    }
 
-  #transactions div {
-    padding-bottom: 0px ;
-    margin-bottom: 35px;
-    font-weight: bold;
-    margin-right: 75px;
-    background: #ECF2FF;
-    box-shadow: none;
-    border-radius: 20px;
-    color: black;
-  }
-
-  .typing {
-    font-weight: bold;
-    margin-bottom: 10px;
+      .walletHeading{
+        color: black;
+        position: absolute;
+        font-family: "Josefin Sans";
+        left: 359px;
+        top: 280px;
+      }
   }
 
   .progress {
-    position: absolute;
-    top: 490px;
-    left: 780px;
+  position: absolute;
+  top: 490px;
+  left: 780px;
   }
-
-  .divider {
-    margin: 10px;
-  }
-
- .tripHeading{
+/* ////////////////////////////// */
+.tripHeading{
   color: black;
   position: absolute;
   font-family: "Josefin Sans";
   left: 409px;
   top: 75px;
-}
+  }
 
- .select_month{
+  .select_month{
   cursor: pointer;
   font-family: "Josefin Sans";
   font-size: 19px;
@@ -442,25 +507,25 @@
   height: 40px;
   width: 90px;
   border-radius: 25px;
- }
+  }
 
-#active {
+  #active {
   background: black;
   color: white;
-}
+  }
 
- .select_month:hover{
+  .select_month:hover{
   background: #cecece;
- }
+  }
 
- .select_month p{
+  .select_month p{
   font-size: 16px;
   text-align: center;
   position: relative;
   bottom: 3px;
- }
+  }
 
- #tripBox{
+  #tripBox{
   position: absolute;
   font-family:"Josefin Sans" ;
   color: rgb(255, 255, 255);
@@ -475,7 +540,68 @@
   padding-left: 40px;
   padding-top: 5px;
   transform: translate(-50%, -50%);
-}
+  }
+
+  @media (max-width: 1366px) and (max-height: 768px){
+    .tripHeading{
+      color: black;
+      position: absolute;
+      font-family: "Josefin Sans";
+      left: 359px;
+      top: 60px;
+      }
+
+    .monthBox {
+      position: relative;
+      right: 50px;
+      bottom: 67px;
+    }
+      .select_month{
+      cursor: pointer;
+      font-family: "Josefin Sans";
+      font-size: 19px;
+      position: absolute;
+      color: black;
+      top: 150px;
+      background: #efefee;
+      transition: all 300ms;
+      height: 40px;
+      width: 90px;
+      border-radius: 25px;
+      }
+  
+      #active {
+      background: black;
+      color: white;
+      }
+  
+      .select_month:hover{
+      background: #cecece;
+      }
+  
+      .select_month p{
+      font-size: 16px;
+      text-align: center;
+      position: relative;
+      bottom: 3px;
+      }
+  
+      #tripBox{
+      position: absolute;
+      font-family:"Josefin Sans" ;
+      color: rgb(255, 255, 255);
+      background: #ceeaf7;
+      top: 60%;
+      left:708px;
+      width: 700px;
+      margin-top: 24px;
+      height: 400px;
+      border-radius: 20px;
+      padding: 25px;
+      padding-left: 40px;
+      padding-top: 5px;
+      }
+  }
 
 /*                        ABOUT PAGE                     */
 
@@ -486,42 +612,57 @@
   height: 100vh;
   position: absolute;
   z-index: -1;
-}
+  }
 
-.inner-container{
+  .inner-container{
   border-radius: 10px;
   position: absolute;
   left: 410px;
   top: 190px;
   width: 40vw;
   background: rgba(255, 255, 255, 0.902);
-  height: 57vh;
+  height: fit-content;
   color: #000;
   padding: 50px;
-}
+  }
 
-.inner-container h1{
+  .inner-container h1{
   margin-top: 0px;
   margin-bottom: 30px;
   font-size: 35px;
   font-weight: 900;
-}
+  }
 
-.text{
+  .text{
   font-size: 16px;
   color: #000000;
   line-height: 30px;
   text-align: justify;
   margin-bottom: 40px;
   font-weight: bold;
-}
+  }
 
-.skills{
+  .skills{
   display: flex;
   justify-content: space-between;
   font-weight: 700;
   font-size: 19px;
-}
+  }
+
+  @media (max-width: 1366px) and (max-height: 768px) {
+    
+  .inner-container{
+    border-radius: 10px;
+    position: absolute;
+    left: 410px;
+    top: 100px;
+    width: 40vw;
+    background: rgba(255, 255, 255, 0.902);
+    height: fit-content;
+    color: #000;
+    padding: 50px;
+    }
+  }
 
 /*                        ABOUT PAGE                     */
 
@@ -537,6 +678,22 @@
   top: 20vh;
   font-size: 28px;
   color: #000;
+}
+
+@media (max-width: 1366px) and (max-height: 768px) {
+  .location {
+    width: 400px;
+    background: white;
+    height: 473px;
+    border-radius: 20px;
+    padding: 50px;
+    padding-top: 5px;
+    position: absolute;
+    left: 8vw;
+    top: 18vh;
+    font-size: 28px;
+    color: #000;
+  }
 }
 
 .request_body {
@@ -581,13 +738,14 @@
 #mapbox{
   position: absolute;
   z-index: -1;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
-}
+  }
 
-#map{
-  height: 100%;
-}
+  #map{
+  height: 100vh;
+  width: 100vw;
+  }
 
 :root {
   --rsbs-backdrop-bg: rgba(0, 0, 0, 0.6);
