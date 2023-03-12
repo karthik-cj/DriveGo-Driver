@@ -79,6 +79,37 @@ const deleteDriverLocation = async () => {
   }
 };
 
+const getData = async () => {
+  try {
+    if (!ethereum) return alert("No Wallet Found");
+    const contract = await getEtheriumContract();
+    const data = await contract.getData();
+    return data;
+  } catch (error) {
+    reportError(error);
+  }
+};
+
+const acceptRide = async ({ userAddr, driverAddr }) => {
+  try {
+    if (!ethereum) return alert("No Wallet Found");
+    const contract = await getEtheriumContract();
+    await contract.acceptRide(userAddr, driverAddr);
+  } catch (error) {
+    reportError(error);
+  }
+};
+
+const rejectRide = async ({ userAddr, driverAddr }) => {
+  try {
+    if (!ethereum) return alert("No Wallet Found");
+    const contract = await getEtheriumContract();
+    await contract.rejectRide(userAddr, driverAddr);
+  } catch (error) {
+    reportError(error);
+  }
+};
+
 const reportError = (error) => {
   console.error(error.message);
 };
@@ -88,4 +119,7 @@ export {
   retrieveDriverInformation,
   setDriverLocation,
   deleteDriverLocation,
+  getData,
+  acceptRide,
+  rejectRide,
 };

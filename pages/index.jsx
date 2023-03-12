@@ -1,6 +1,7 @@
 import Navbar from "../components/Navbar";
-import { getSession } from "next-auth/react";
+import { getSession, signOut } from "next-auth/react";
 import Button from "@mui/material/Button";
+import { Rating } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Head from "next/head";
 import Divider from "@mui/material/Divider";
@@ -22,10 +23,11 @@ import { useState, useEffect } from "react";
 import {
   setDriverLocation,
   deleteDriverLocation,
-} from "../services/blockchain";
-import {
   retrieveDriverInformation,
   setDriverInformation,
+  getData,
+  rejectRide,
+  acceptRide,
 } from "../services/blockchain";
 import { BottomSheet } from "react-spring-bottom-sheet";
 import "react-spring-bottom-sheet/dist/style.css";
@@ -56,7 +58,15 @@ const mapOptions = {
       elementType: "geometry",
       stylers: [
         {
-          color: "#ebe3cd",
+          color: "#f5f5f5",
+        },
+      ],
+    },
+    {
+      elementType: "labels.icon",
+      stylers: [
+        {
+          visibility: "off",
         },
       ],
     },
@@ -64,7 +74,7 @@ const mapOptions = {
       elementType: "labels.text.fill",
       stylers: [
         {
-          color: "#523735",
+          color: "#616161",
         },
       ],
     },
@@ -72,25 +82,7 @@ const mapOptions = {
       elementType: "labels.text.stroke",
       stylers: [
         {
-          color: "#f5f1e6",
-        },
-      ],
-    },
-    {
-      featureType: "administrative",
-      elementType: "geometry.stroke",
-      stylers: [
-        {
-          color: "#c9b2a6",
-        },
-      ],
-    },
-    {
-      featureType: "administrative.land_parcel",
-      elementType: "geometry.stroke",
-      stylers: [
-        {
-          color: "#dcd2be",
+          color: "#f5f5f5",
         },
       ],
     },
@@ -99,16 +91,7 @@ const mapOptions = {
       elementType: "labels.text.fill",
       stylers: [
         {
-          color: "#ae9e90",
-        },
-      ],
-    },
-    {
-      featureType: "landscape.natural",
-      elementType: "geometry",
-      stylers: [
-        {
-          color: "#dfd2ae",
+          color: "#bdbdbd",
         },
       ],
     },
@@ -117,7 +100,7 @@ const mapOptions = {
       elementType: "geometry",
       stylers: [
         {
-          color: "#dfd2ae",
+          color: "#eeeeee",
         },
       ],
     },
@@ -126,33 +109,16 @@ const mapOptions = {
       elementType: "labels.text.fill",
       stylers: [
         {
-          color: "#93817c",
-        },
-      ],
-    },
-    {
-      featureType: "poi.business",
-      stylers: [
-        {
-          visibility: "off",
+          color: "#757575",
         },
       ],
     },
     {
       featureType: "poi.park",
-      elementType: "geometry.fill",
+      elementType: "geometry",
       stylers: [
         {
-          color: "#a5b076",
-        },
-      ],
-    },
-    {
-      featureType: "poi.park",
-      elementType: "labels.text",
-      stylers: [
-        {
-          visibility: "off",
+          color: "#e5e5e5",
         },
       ],
     },
@@ -161,7 +127,7 @@ const mapOptions = {
       elementType: "labels.text.fill",
       stylers: [
         {
-          color: "#447530",
+          color: "#9e9e9e",
         },
       ],
     },
@@ -170,16 +136,16 @@ const mapOptions = {
       elementType: "geometry",
       stylers: [
         {
-          color: "#f5f1e6",
+          color: "#ffffff",
         },
       ],
     },
     {
       featureType: "road.arterial",
-      elementType: "geometry",
+      elementType: "labels.text.fill",
       stylers: [
         {
-          color: "#fdfcf8",
+          color: "#757575",
         },
       ],
     },
@@ -188,34 +154,16 @@ const mapOptions = {
       elementType: "geometry",
       stylers: [
         {
-          color: "#f8c967",
+          color: "#dadada",
         },
       ],
     },
     {
       featureType: "road.highway",
-      elementType: "geometry.stroke",
+      elementType: "labels.text.fill",
       stylers: [
         {
-          color: "#e9bc62",
-        },
-      ],
-    },
-    {
-      featureType: "road.highway.controlled_access",
-      elementType: "geometry",
-      stylers: [
-        {
-          color: "#e98d58",
-        },
-      ],
-    },
-    {
-      featureType: "road.highway.controlled_access",
-      elementType: "geometry.stroke",
-      stylers: [
-        {
-          color: "#db8555",
+          color: "#616161",
         },
       ],
     },
@@ -224,7 +172,7 @@ const mapOptions = {
       elementType: "labels.text.fill",
       stylers: [
         {
-          color: "#806b63",
+          color: "#9e9e9e",
         },
       ],
     },
@@ -233,25 +181,7 @@ const mapOptions = {
       elementType: "geometry",
       stylers: [
         {
-          color: "#dfd2ae",
-        },
-      ],
-    },
-    {
-      featureType: "transit.line",
-      elementType: "labels.text.fill",
-      stylers: [
-        {
-          color: "#8f7d77",
-        },
-      ],
-    },
-    {
-      featureType: "transit.line",
-      elementType: "labels.text.stroke",
-      stylers: [
-        {
-          color: "#ebe3cd",
+          color: "#e5e5e5",
         },
       ],
     },
@@ -260,16 +190,16 @@ const mapOptions = {
       elementType: "geometry",
       stylers: [
         {
-          color: "#dfd2ae",
+          color: "#eeeeee",
         },
       ],
     },
     {
       featureType: "water",
-      elementType: "geometry.fill",
+      elementType: "geometry",
       stylers: [
         {
-          color: "#b9d3c2",
+          color: "#c9c9c9",
         },
       ],
     },
@@ -278,24 +208,21 @@ const mapOptions = {
       elementType: "labels.text.fill",
       stylers: [
         {
-          color: "#92998d",
+          color: "#9e9e9e",
         },
       ],
     },
   ],
 };
 
-function Driver() {
-  let addr = "0x9e003FaBD5221e4d7Bb09B068D73F8F94015b4bb";
-  let pick = "Thrissur";
-  let drop = "Fort Kochi";
-
-  const [currentPlace, setCurrentPlace] = useState("");
+function Driver({ user }) {
+  const [value, setValue] = useState(2);
+  const [accept, setAccept] = useState(null);
+  const [data, setData] = useState([]);
   const [currentLatLng, setCurrentLatLng] = useState(null);
   const [center, setCenter] = useState({ lat: 9.9312, lng: 76.2499 });
   const [open, setOpen] = useState(false);
   const [type, setType] = useState("");
-  const [alertOpen, setAlertOpen] = useState(false);
   const [aadharNumber, setAadharNumber] = useState("");
   const [vehicleNumber, setVehicleNumber] = useState("");
   const [license, setLicense] = useState("");
@@ -306,10 +233,10 @@ function Driver() {
   const [bottomSheet, setBottomSheet] = useState(false);
   const icon = {
     url: "/mapicon.png",
-    scaledSize: { width: 60, height: 60 },
+    scaledSize: { width: 45, height: 45 },
   };
 
-  const DeleteLocation = async (event) => {
+  const DeleteLocation = async () => {
     await deleteDriverLocation();
     setCurrentLatLng(null);
   };
@@ -324,7 +251,6 @@ function Driver() {
           geocoder.geocode({ location: latLng }, async (results, status) => {
             if (status === "OK") {
               if (results[0]) {
-                setCurrentPlace(results[0].formatted_address);
                 setCurrentLatLng({ lat: latitude, lng: longitude });
                 setCenter({ lat: latitude, lng: longitude });
                 await setDriverLocation({
@@ -347,65 +273,81 @@ function Driver() {
     }
   };
 
-  const ShowMarker = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          const geocoder = new window.google.maps.Geocoder();
-          const latLng = new window.google.maps.LatLng(latitude, longitude);
-          geocoder.geocode({ location: latLng }, async (results, status) => {
-            if (status === "OK") {
-              if (results[0]) {
-                setCurrentPlace(results[0].formatted_address);
-                setCurrentLatLng({ lat: latitude, lng: longitude });
-                setCenter({ lat: latitude, lng: longitude });
-              } else {
-                console.log("No results found");
-              }
-            } else {
-              console.log(`Geocoder failed due to: ${status}`);
-            }
-          });
-        },
-        () => {
-          console.log("Unable to retrieve location.");
+  const ShowMarker = (specificLocation) => {
+    const geocoder = new window.google.maps.Geocoder();
+    geocoder.geocode({ address: specificLocation }, async (results, status) => {
+      if (status === "OK") {
+        if (results[0]) {
+          const { lat, lng } = results[0].geometry.location;
+          setCurrentLatLng({ lat: lat(), lng: lng() });
+          setCenter({ lat: lat(), lng: lng() });
+        } else {
+          console.log("No results found");
         }
-      );
-    } else {
-      console.log("Geolocation not supported by browser.");
-    }
+      } else {
+        console.log(`Geocoder failed due to: ${status}`);
+      }
+    });
   };
 
   useEffect(() => {
-    if (window.ethereum.selectedAddress === null) {
-      setAlertOpen(true);
-    } else retrieve();
-
     async function retrieve() {
       let details = await retrieveDriverInformation();
-      if (details[2]) ShowMarker();
-      if (!details[0]) setOpen(true);
+      if (details) {
+        if (details[2]) ShowMarker(details[2]);
+        if (!details[0]) setOpen(true);
+      }
+    }
+
+    window.ethereum.on("accountsChanged", function (accounts) {
+      if (accounts.length > 0) {
+        retrieve();
+      } else {
+        signOut({ redirect: "/signin" });
+      }
+    });
+
+    if (window.ethereum.selectedAddress !== null) {
+      retrieve();
+    } else {
+      signOut({ redirect: "/signin" });
     }
   }, []);
 
+  useEffect(() => {
+    let count = 0;
+    if (window.ethereum.selectedAddress !== null) {
+      const interval = setInterval(async () => {
+        const data = await getData();
+        console.log(data);
+        setData(data);
+
+        if (data?.length === 0) setAccept(null);
+        for (let i = 0; i < data.length; i++) {
+          if (
+            data[i].accept &&
+            data[i].driverAddress.toLowerCase() ===
+              window.ethereum.selectedAddress.toLowerCase()
+          ) {
+            count++;
+            setAccept(data[i]);
+            break;
+          }
+        }
+        if (count === 0) setAccept(null);
+      }, 3000);
+
+      return () => clearInterval(interval);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (accept === null) setBottomSheet(false);
+    else setBottomSheet(true);
+  }, [accept]);
+
   return (
     <div>
-      <Snackbar
-        open={alertOpen}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        style={{ marginTop: "40px" }}
-      >
-        <Alert
-          severity="error"
-          sx={{ width: "100%", fontWeight: "bold", fontFamily: "Josefin Sans" }}
-          onClose={() => {
-            setAlertOpen(false);
-          }}
-        >
-          Connect To Metamask Wallet !!!
-        </Alert>
-      </Snackbar>
       <Dialog
         style={{ marginTop: "45px" }}
         open={open}
@@ -436,7 +378,13 @@ function Driver() {
           Driver Details
         </DialogTitle>
         <Divider />
-        <DialogContent>
+        <DialogContent
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "space-between",
+          }}
+        >
           <TextField
             id="outlined-basic"
             label="Driver's Name"
@@ -625,8 +573,23 @@ function Driver() {
         <p style={{ fontSize: "22px" }}>Update :</p>
         <Button
           variant="contained"
-          sx={{ background: "#000", color: "white" }}
-          className="switch"
+          sx={{
+            background: "#000",
+            color: "white",
+            fontFamily: "Josefin Sans",
+            paddingTop: "9px",
+            position: "relative",
+            height: "35px",
+            left: "105px",
+            bottom: "50px",
+            borderRadius: "10px",
+            boxShadow: "none",
+            "&:hover": {
+              background: "#ebebeb",
+              boxShadow: "none",
+              color: "black",
+            },
+          }}
           onClick={MarkerUpdate}
         >
           Location
@@ -636,8 +599,23 @@ function Driver() {
         </p>
         <Button
           variant="contained"
-          sx={{ background: "#000", color: "white" }}
-          className="update"
+          sx={{
+            background: "#000",
+            color: "white",
+            fontFamily: "Josefin Sans",
+            paddingTop: "9px",
+            position: "relative",
+            height: "35px",
+            left: "115px",
+            bottom: "100px",
+            borderRadius: "10px",
+            boxShadow: "none",
+            "&:hover": {
+              background: "#ebebeb",
+              boxShadow: "none",
+              color: "black",
+            },
+          }}
           onClick={DeleteLocation}
         >
           Delete
@@ -647,35 +625,100 @@ function Driver() {
         >
           Requests
         </h1>
-        <div className="request" style={{ fontSize: "16px" }}>
-          <p style={{ paddingTop: "9px" }}>
-            From : {addr.slice(0, 5)}....{addr.slice(37)}
-          </p>
-          <p style={{ marginTop: "-10px" }}>Pickup : {pick}</p>
-          <p style={{ marginTop: "-10px" }}>Dropoff : {drop}</p>
-          <CheckCircleOutlinedIcon className="tick" fontSize="large" />
-          <CancelOutlinedIcon className="cross" fontSize="large" />
-        </div>
-        <div className="request" style={{ fontSize: "16px" }}>
-          <p style={{ paddingTop: "9px" }}>
-            From : {addr.slice(0, 5)}....{addr.slice(37)}
-          </p>
-          <p style={{ marginTop: "-10px" }}>Pickup : {pick}</p>
-          <p style={{ marginTop: "-10px" }}>Dropoff : {drop}</p>
-          <CheckCircleOutlinedIcon className="tick" fontSize="large" />
-          <CancelOutlinedIcon className="cross" fontSize="large" />
+        <div className="request_body">
+          {data?.map((data, index) => {
+            const addr = data.driverAddress === user.address;
+            const accept = data.accept === false;
+            const reject = data.reject === false;
+            if (addr && accept && reject) {
+              return (
+                <div
+                  key={index}
+                  className="request"
+                  style={{ fontSize: "16px" }}
+                >
+                  <p style={{ paddingTop: "9px" }}>
+                    From: {data.userAddress.slice(0, 7)}......
+                    {data.userAddress.slice(35)}
+                  </p>
+                  <p style={{ marginTop: "-10px" }}>
+                    Pickup: {data.pickup.slice(0, -7)}
+                  </p>
+                  <p style={{ marginTop: "-10px" }}>
+                    Dropoff: {data.dropoff.slice(0, -7)}
+                  </p>
+                  <CheckCircleOutlinedIcon
+                    className="tick"
+                    fontSize="large"
+                    onClick={async () => {
+                      await acceptRide({
+                        userAddr: data.userAddress,
+                        driverAddr: data.driverAddress,
+                      });
+                    }}
+                    sx={{
+                      "&:hover": {
+                        color: "green",
+                      },
+                    }}
+                  />
+                  <CancelOutlinedIcon
+                    className="cross"
+                    fontSize="large"
+                    onClick={async () => {
+                      await rejectRide({
+                        userAddr: data.userAddress,
+                        driverAddr: data.driverAddress,
+                      });
+                    }}
+                    sx={{
+                      "&:hover": {
+                        color: "#DF2E38",
+                      },
+                    }}
+                  />
+                </div>
+              );
+            } else {
+              return null;
+            }
+          })}
         </div>
       </section>
-      {/* <button onClick={() => setBottomSheet(true)}>Open bottom sheet</button>
-      <BottomSheet
-        style={{ color: "black" }}
-        open={bottomSheet}
-        onDismiss={() => {
-          setBottomSheet(false);
-        }}
-      >
-        <h1 style={{ margin: "20px" }}>Ongoing Rides</h1>
-      </BottomSheet> */}
+      <BottomSheet style={{ color: "black" }} open={bottomSheet}>
+        <div style={{ margin: "20px" }}>
+          <h1>Ongoing Rides</h1>
+          {accept !== null ? (
+            <div
+              style={{
+                borderRadius: "10px",
+                background: "#efefee",
+                padding: "5px",
+                paddingLeft: "10px",
+                fontWeight: "bold",
+              }}
+            >
+              <p style={{ margin: "7px" }}>
+                Rider : {accept.userAddress.slice(0, 7)}......
+                {accept.userAddress.slice(35)}
+              </p>
+              <p style={{ margin: "7px" }}>PickUp : {accept.pickup}</p>
+              <p style={{ margin: "7px" }}>DropOff : {accept.dropoff}</p>
+              <p style={{ margin: "7px" }}>Amount : {accept.amount} ETH</p>
+              <p style={{ margin: "7px" }}>Rate Rider : </p>
+              <Rating
+                name="simple-controlled"
+                value={value}
+                onChange={(event, newValue) => {
+                  setValue(newValue);
+                }}
+                size="small"
+                sx={{ position: "absolute", left: "128px", bottom: "33px" }}
+              />
+            </div>
+          ) : null}
+        </div>
+      </BottomSheet>
     </div>
   );
 }
