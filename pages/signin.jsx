@@ -87,7 +87,7 @@ function SignIn() {
       <div className="login-box">
         <h2>Driver</h2>
         <h2 style={{ marginTop: "-20px" }}>Authentication</h2>
-        <form style={{ position: "relative", left: "95px", bottom: "30px" }}>
+        <form style={{ display: "flex", justifyContent: "center" }}>
           <a onClick={handleRider}>
             <span></span>
             <span></span>
