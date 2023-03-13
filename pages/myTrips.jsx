@@ -21,6 +21,14 @@ export async function getServerSideProps(context) {
   };
 }
 
+useEffect(() => {
+  window.ethereum.on("accountsChanged", function (accounts) {
+    if (accounts.length === 0) {
+      signOut({ redirect: "/signin" });
+    }
+  });
+}, []);
+
 const Trips = () => {
   var months = [
     "January",

@@ -28,6 +28,14 @@ const Profile = ({ user }) => {
   const [alertOpen, setAlertOpen] = useState(false);
 
   useEffect(() => {
+    window.ethereum.on("accountsChanged", function (accounts) {
+      if (accounts.length === 0) {
+        signOut({ redirect: "/signin" });
+      }
+    });
+  }, []);
+
+  useEffect(() => {
     if (window.ethereum.selectedAddress === null) {
       setAlertOpen(true);
     } else getInfo();

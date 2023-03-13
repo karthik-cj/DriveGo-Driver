@@ -1,5 +1,5 @@
 import Navbar from "../components/Navbar";
-import { getSession } from "next-auth/react";
+import { getSession, signOut } from "next-auth/react";
 import ProfileElement from "../components/ProfileElement";
 import Head from "next/head";
 
@@ -19,6 +19,14 @@ export async function getServerSideProps(context) {
     props: { user: session.user },
   };
 }
+
+useEffect(() => {
+  window.ethereum.on("accountsChanged", function (accounts) {
+    if (accounts.length === 0) {
+      signOut({ redirect: "/signin" });
+    }
+  });
+}, []);
 
 const About = () => {
   return (

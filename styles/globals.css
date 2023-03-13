@@ -9,6 +9,7 @@
     -o-background-size: cover;
     background-size: cover;
     color: white;
+    overflow-x: hidden;
   }
 
 
@@ -21,143 +22,111 @@
     box-sizing: border-box;
   }
 
-  .loginBaground{
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-    font-family: "Josefin Sans";
-    background: linear-gradient(#141e30, #243b55);
+  .wave{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    z-index: -1;
   }
-
-  .login-box {
-    position: absolute;
-    top: 50vh;
-    left: 50vw;
-    height: 220px;
-    width: 400px;
-    padding: 40px;
-    transform: translate(-50%, -50%);
-    background: rgba(0,0,0,.5);
-    box-sizing: border-box;
-    box-shadow: 0 15px 25px rgba(0,0,0,.6);
-    border-radius: 20px;
+  
+  .container{
+      width: 100vw;
+      height: 100vh;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap :7rem;
+      padding: 0 2rem;
   }
-
-  .login-box h2 {
-    margin: 0 0 30px;
-    letter-spacing: 1.8px;
-    padding: 0;
-    color: #fff;
+  
+  .img{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  
+  .login-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-align: center;
   }
-
-  .login-box form a {
-    position: absolute;
-    left: 130px;
-    bottom: 40px;
-    display: inline-block;
-    padding: 10px 20px;
-    color: #03e9f4;
-    font-size: 16px;
-    text-decoration: none;
+  
+  .img img{
+    width: 550px;
+  }
+  
+  
+  .login-content img{
+      height: 160px;
+  }
+  
+  .login-content h2{
+    margin: 15px 0;
+    color: #333;
     text-transform: uppercase;
-    overflow: hidden;
-    transition: .5s;
-    margin-top: 40px;
-    letter-spacing: 4px
+    font-size: 2.5rem;
   }
-
-  .login-box a:hover {
-    cursor: pointer;
-    background: #03e9f4;
-    color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 0 5px #03e9f4,
-                0 0 25px #03e9f4,
-                0 0 50px #03e9f4,
-                0 0 100px #03e9f4;
-  }
-
-  .login-box a span {
-    position: absolute;
+  
+  
+  .btn{
     display: block;
+    width: 30%;
+    height: 50px;
+    border-radius: 25px;
+    outline: none;
+    border: none;
+    background-image: linear-gradient(to right, #32be8f, #38d39f, #32be8f);
+    background-size: 200%;
+    font-size: 1.2rem;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    text-transform: uppercase;
+    margin: 0.5rem 0;
+    cursor: pointer;
+    transition: .5s;
   }
-
-  .login-box a span:nth-child(1) {
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #03e9f4);
-    animation: btn-anim1 1s linear infinite;
+  .btn:hover{
+    background-position: right;
   }
-
-  @keyframes btn-anim1 {
-    0% {
-      left: -100%;
-    }
-    50%,100% {
-      left: 100%;
-    }
-  }
-
-  .login-box a span:nth-child(2) {
-    top: -100%;
-    right: 0;
-    width: 2px;
-    height: 100%;
-    background: linear-gradient(180deg, transparent, #03e9f4);
-    animation: btn-anim2 1s linear infinite;
-    animation-delay: .25s
-  }
-
-  @keyframes btn-anim2 {
-    0% {
-      top: -100%;
-    }
-    50%,100% {
-      top: 100%;
+  
+  
+  @media screen and (max-width: 1050px){
+    .container{
+      grid-gap: 5rem;
     }
   }
-
-  .login-box a span:nth-child(3) {
-    bottom: 0;
-    right: -100%;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(270deg, transparent, #03e9f4);
-    animation: btn-anim3 1s linear infinite;
-    animation-delay: .5s
-  }
-
-  @keyframes btn-anim3 {
-    0% {
-      right: -100%;
+  
+  @media screen and (max-width: 1000px){
+    .login-content h2{
+          font-size: 2.4rem;
+          margin: 8px 0;
     }
-    50%,100% {
-      right: 100%;
+  
+    .img img{
+      width: 400px;
     }
   }
-
-  .login-box a span:nth-child(4) {
-    bottom: -100%;
-    left: 0;
-    width: 2px;
-    height: 100%;
-    background: linear-gradient(360deg, transparent, #03e9f4);
-    animation: btn-anim4 1s linear infinite;
-    animation-delay: .75s
-  }
-
-  @keyframes btn-anim4 {
-    0% {
-      bottom: -100%;
+  
+  @media screen and (max-width: 900px){
+    .container{
+      grid-template-columns: 1fr;
     }
-    50%,100% {
-      bottom: 100%;
+  
+    .img{
+      display: none;
+    }
+  
+    .wave{
+      display: none;
+    }
+  
+    .login-content{
+      justify-content: center;
     }
   }
-
+  
   #navbar {
     display: flex;
     justify-content: space-between;

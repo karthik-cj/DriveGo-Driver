@@ -84,18 +84,23 @@ function SignIn() {
       <Head>
         <title>DriveGo | Authenticate</title>
       </Head>
-      <div className="login-box">
-        <h2>Driver</h2>
-        <h2 style={{ marginTop: "-20px" }}>Authentication</h2>
-        <form style={{ display: "flex", justifyContent: "center" }}>
-          <a onClick={handleRider}>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            Sign In
-          </a>
-        </form>
+      <div>
+        <img className="wave" src="/wave.png" />
+        <div className="container">
+          <div className="img">
+            <img src="/bg.svg" />
+          </div>
+          <div className="login-content">
+            <img style={{ marginBottom: "10px" }} src="/avatar.svg" />
+            <h2>Driver</h2>
+            <input
+              type="button"
+              className="btn"
+              onClick={handleRider}
+              value="Login"
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
