@@ -3,6 +3,9 @@ import ProfileElement from "../components/ProfileElement";
 import { getSession, signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
 import Head from "next/head";
+import { displayRideHistory } from "../services/blockchain";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
@@ -21,7 +24,7 @@ export async function getServerSideProps(context) {
   };
 }
 
-const Trips = () => {
+const Trips = ({ user }) => {
   var months = [
     "January",
     "February",
@@ -40,6 +43,7 @@ const Trips = () => {
   var thisMonth = months[month];
   var prevMonth = months[month - 1];
   const [activeTab, setActiveTab] = useState("tab1");
+  const [trips, setTrips] = useState(null);
 
   const handleTab1 = () => {
     setActiveTab("tab1");
@@ -57,6 +61,12 @@ const Trips = () => {
         signOut({ redirect: "/signin" });
       }
     });
+    async function getHistory() {
+      let data = await displayRideHistory();
+      console.log(data);
+      setTrips(data);
+    }
+    getHistory();
   }, []);
 
   return (
@@ -94,7 +104,50 @@ const Trips = () => {
         </div>
       </div>
 
-      <div id="tripBox"></div>
+      <div id="tripBox">
+        {trips !== null ? (
+          <div>
+            {trips.map((trip, index) => {
+              if (trip.driverAddress === user.address) {
+                return (
+                  <Card
+                    sx={{
+                      minWidth: 360,
+                      maxWidth: 360,
+                      maxHeight: 430,
+                      fontFamily: "Josefin Sans",
+                      paddingBottom: "0px",
+                      paddingLeft: "20px",
+                      marginBottom: "35px",
+                      fontWeight: "bold",
+                      background: "#ECF2FF",
+                      boxShadow: "none",
+                      borderRadius: "20px",
+                    }}
+                    key={index}
+                  >
+                    <CardContent>
+                      <p>
+                        Rider : {trip.userAddress.slice(0, 7)}......
+                        {trip.userAddress.slice(35)}
+                      </p>
+                      <p>Pickup : {trip.pickup}</p>
+                      <p>DropOff : {trip.dropoff}</p>
+                      <p>Amount : {trip.amount} ETH</p>
+                      <p>
+                        Date :{" "}
+                        {new Date(
+                          parseInt(trip.date._hex, 16) * 1000
+                        ).toLocaleString()}
+                      </p>
+                    </CardContent>
+                  </Card>
+                );
+              }
+            })}
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 };

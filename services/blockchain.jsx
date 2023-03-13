@@ -110,6 +110,27 @@ const rejectRide = async ({ userAddr, driverAddr }) => {
   }
 };
 
+const updateUserRating = async ({ userAddr, rating }) => {
+  try {
+    if (!ethereum) return alert("No Wallet Found");
+    const contract = await getEtheriumContract();
+    await contract.updateUserRating(userAddr, rating);
+  } catch (error) {
+    reportError(error);
+  }
+};
+
+const displayRideHistory = async () => {
+  try {
+    if (!ethereum) return alert("No Wallet Found");
+    const contract = await getEtheriumContract();
+    const data = await contract.displayRideHistory();
+    return data;
+  } catch (error) {
+    reportError(error);
+  }
+};
+
 const reportError = (error) => {
   console.error(error.message);
 };
@@ -122,4 +143,6 @@ export {
   getData,
   acceptRide,
   rejectRide,
+  updateUserRating,
+  displayRideHistory,
 };

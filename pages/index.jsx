@@ -28,6 +28,7 @@ import {
   getData,
   rejectRide,
   acceptRide,
+  updateUserRating,
 } from "../services/blockchain";
 import { BottomSheet } from "react-spring-bottom-sheet";
 import "react-spring-bottom-sheet/dist/style.css";
@@ -709,8 +710,12 @@ function Driver({ user }) {
               <Rating
                 name="simple-controlled"
                 value={value}
-                onChange={(event, newValue) => {
+                onChange={async (event, newValue) => {
                   setValue(newValue);
+                  await updateUserRating({
+                    userAddr: accept.userAddress,
+                    rating: newValue,
+                  });
                 }}
                 size="small"
                 sx={{ position: "absolute", left: "128px", bottom: "33px" }}
