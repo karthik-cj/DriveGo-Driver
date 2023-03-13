@@ -2,6 +2,7 @@ import Navbar from "../components/Navbar";
 import { getSession, signOut } from "next-auth/react";
 import ProfileElement from "../components/ProfileElement";
 import Head from "next/head";
+import { useEffect } from "react";
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
@@ -20,15 +21,14 @@ export async function getServerSideProps(context) {
   };
 }
 
-useEffect(() => {
-  window.ethereum.on("accountsChanged", function (accounts) {
-    if (accounts.length === 0) {
-      signOut({ redirect: "/signin" });
-    }
-  });
-}, []);
-
 const About = () => {
+  useEffect(() => {
+    window.ethereum.on("accountsChanged", function (accounts) {
+      if (accounts.length === 0) {
+        signOut({ redirect: "/signin" });
+      }
+    });
+  }, []);
   return (
     <div className="about">
       <Head>
