@@ -133,7 +133,7 @@ const Trips = ({ user }) => {
                       </p>
                       <p>Pickup : {trip.pickup}</p>
                       <p>DropOff : {trip.dropoff}</p>
-                      <p>Amount : {trip.amount} ETH</p>
+                      <p>Amount : {trip.amount} MATIC</p>
                       <p>
                         Date :{" "}
                         {new Date(

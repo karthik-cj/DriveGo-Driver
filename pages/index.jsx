@@ -630,8 +630,7 @@ function Driver({ user }) {
           {data?.map((data, index) => {
             const addr = data.driverAddress === user.address;
             const accept = data.accept === false;
-            const reject = data.reject === false;
-            if (addr && accept && reject) {
+            if (addr && accept) {
               return (
                 <div
                   key={index}
@@ -705,7 +704,7 @@ function Driver({ user }) {
               </p>
               <p style={{ margin: "7px" }}>PickUp : {accept.pickup}</p>
               <p style={{ margin: "7px" }}>DropOff : {accept.dropoff}</p>
-              <p style={{ margin: "7px" }}>Amount : {accept.amount} ETH</p>
+              <p style={{ margin: "7px" }}>Amount : {accept.amount} MATIC</p>
               <p style={{ margin: "7px" }}>Rate Rider : </p>
               <Rating
                 name="simple-controlled"

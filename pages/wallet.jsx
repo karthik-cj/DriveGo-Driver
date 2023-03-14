@@ -81,7 +81,7 @@ const Wallet = ({ userBal, user }) => {
         <h3 style={{ fontWeight: "lighter", color: "#606060" }}>Balance</h3>
         <h1 style={{ marginTop: "-8px" }}>
           {Math.floor(parseInt(userBal.rawValue, 16) * 1e-18 * 10000) / 10000}{" "}
-          ETH
+          MATIC
         </h1>
         <button
           className="addFund"
@@ -124,7 +124,7 @@ const Wallet = ({ userBal, user }) => {
                     sx={{ fontWeight: "bold", marginBottom: "10px" }}
                   >
                     Value : {Math.floor(index.value * 1e-18 * 10000) / 10000}{" "}
-                    ETH
+                    MATIC
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     <b>
