@@ -4,7 +4,7 @@ import { EvmChain } from "@moralisweb3/common-evm-utils";
 export default async function handler(req, res) {
   try {
     const address = req.body.address;
-    const chain = EvmChain.GOERLI;
+    const chain = EvmChain.MUMBAI;
 
     if (!Moralis.Core.isStarted) {
       await Moralis.start({

@@ -85,7 +85,7 @@ const Wallet = ({ userBal, user }) => {
         </h1>
         <button
           className="addFund"
-          onClick={() => window.open("https://goerlifaucet.com/")}
+          onClick={() => window.open("https://mumbaifaucet.com/")}
         >
           <span>&#43;</span> Add Fund
         </button>
@@ -99,6 +99,7 @@ const Wallet = ({ userBal, user }) => {
             return index.value * 1e-18 > 0 ? (
               <Card
                 sx={{
+                  minWidth: 340,
                   maxWidth: 360,
                   maxHeight: 430,
                   fontFamily: "Josefin Sans",
@@ -111,32 +112,32 @@ const Wallet = ({ userBal, user }) => {
                 }}
                 key={index.blockNumber}
               >
-                <CardActionArea>
-                  <CardMedia
-                    component="img"
-                    height="190"
-                    image="/ethercoin.jpg"
-                    alt="Ether Coin"
-                  />
-                  <CardContent>
-                    <Typography
-                      variant="h5"
-                      sx={{ fontWeight: "bold", marginBottom: "10px" }}
-                    >
-                      Value : {Math.floor(index.value * 1e-18 * 10000) / 10000}{" "}
-                      ETH
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      <b>
-                        From: {index.from}
-                        <Divider sx={{ margin: "10px" }} />
-                        To: {index.to}
-                        <Divider sx={{ margin: "10px" }} />
-                        Date/Time: {index.blockTimestamp}
-                      </b>
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
+                <CardMedia
+                  component="img"
+                  height="190"
+                  image="/ethercoin.jpg"
+                  alt="Ether Coin"
+                />
+                <CardContent>
+                  <Typography
+                    variant="h5"
+                    sx={{ fontWeight: "bold", marginBottom: "10px" }}
+                  >
+                    Value : {Math.floor(index.value * 1e-18 * 10000) / 10000}{" "}
+                    ETH
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    <b>
+                      From : {index.from.slice(0, 7)}......
+                      {index.from.slice(35)}
+                      <Divider sx={{ margin: "10px" }} />
+                      To : {index.to.slice(0, 7)}......
+                      {index.to.slice(35)}
+                      <Divider sx={{ margin: "10px" }} />
+                      Date : {index.blockTimestamp.slice(0, -31)}
+                    </b>
+                  </Typography>
+                </CardContent>
               </Card>
             ) : null;
           })}

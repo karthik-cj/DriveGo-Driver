@@ -104,9 +104,9 @@ const Trips = ({ user }) => {
         </div>
       </div>
 
-      <div id="tripBox">
+      <div>
         {trips !== null ? (
-          <div>
+          <div id="tripBox">
             {trips.map((trip, index) => {
               if (trip.driverAddress === user.address) {
                 return (
