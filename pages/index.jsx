@@ -316,9 +316,9 @@ function Driver({ user }) {
   }, []);
 
   useEffect(() => {
-    let count = 0;
     if (window.ethereum.selectedAddress !== null) {
       const interval = setInterval(async () => {
+        let count = 0;
         const data = await getData();
         console.log(data);
         setData(data);
