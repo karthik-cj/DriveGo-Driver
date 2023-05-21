@@ -43,7 +43,7 @@ const Trips = ({ user }) => {
   var thisMonth = months[month];
   var prevMonth = months[month - 1];
   const [activeTab, setActiveTab] = useState("tab1");
-  const [trips, setTrips] = useState(null);
+  const [trips, setTrips] = useState([]);
 
   const handleTab1 = () => {
     setActiveTab("tab1");
@@ -105,7 +105,7 @@ const Trips = ({ user }) => {
       </div>
 
       <div>
-        {trips !== null ? (
+        {trips.length !== 0 ? (
           <div id="tripBox">
             {trips.map((trip, index) => {
               if (trip.driverAddress === user.address) {
@@ -146,7 +146,18 @@ const Trips = ({ user }) => {
               }
             })}
           </div>
-        ) : null}
+        ) : (
+          <div
+            id="tripBox"
+            style={{
+              color: "black",
+              paddingTop: "25px",
+              paddingLeft: "110px",
+            }}
+          >
+            No Trips Yet!!!
+          </div>
+        )}
       </div>
     </div>
   );

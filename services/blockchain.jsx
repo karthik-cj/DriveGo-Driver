@@ -25,7 +25,7 @@ const setDriverInformation = async ({
   phone,
   model,
   vehicleNumber,
-  rcBook,
+  dob,
   license,
   vehicleName,
   aadhar,
@@ -38,7 +38,7 @@ const setDriverInformation = async ({
       phone,
       model,
       vehicleNumber,
-      rcBook,
+      dob,
       license,
       vehicleName,
       aadhar

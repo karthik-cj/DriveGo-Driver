@@ -32,6 +32,7 @@ import {
 } from "../services/blockchain";
 import { BottomSheet } from "react-spring-bottom-sheet";
 import "react-spring-bottom-sheet/dist/style.css";
+import axios from "axios";
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
@@ -229,9 +230,11 @@ function Driver({ user }) {
   const [license, setLicense] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [rcbook, setRcBook] = useState("");
+  const [dob, setDob] = useState("");
   const [vehicleName, setVehicleName] = useState("");
   const [bottomSheet, setBottomSheet] = useState(false);
+  const [connectInternet, setConnectInternet] = useState(false);
+  const [connectInternet1, setConnectInternet1] = useState(false);
   const icon = {
     url: "/mapicon.png",
     scaledSize: { width: 45, height: 45 },
@@ -347,24 +350,130 @@ function Driver({ user }) {
     else setBottomSheet(true);
   }, [accept]);
 
+  async function AadharValidation() {
+    const encodedParams = new URLSearchParams();
+    encodedParams.set("captchaValue", "TK6HXq");
+    encodedParams.set("captchaTxnId", "58p5MxkQrNFp");
+    encodedParams.set("method", "uidvalidate");
+    encodedParams.set("clientid", "111");
+    encodedParams.set("txn_id", "4545533");
+    encodedParams.set("consent", "Y");
+    encodedParams.set("uidnumber", aadharNumber);
+
+    const options = {
+      method: "POST",
+      url: "https://aadhaar-number-verification.p.rapidapi.com/Uidverifywebsvcv1/Uidverify",
+      headers: {
+        "content-type": "application/x-www-form-urlencoded",
+        "X-RapidAPI-Key": "8fe67656dcmsh04eb6781511e373p1850ecjsn834287a91eb1",
+        "X-RapidAPI-Host": "aadhaar-number-verification.p.rapidapi.com",
+      },
+      data: encodedParams,
+    };
+
+    const detail = {
+      method: "POST",
+      url: "https://driving-license-verification1.p.rapidapi.com/DL/DLDetails",
+      headers: {
+        "content-type": "application/json",
+        "X-RapidAPI-Key": "8fe67656dcmsh04eb6781511e373p1850ecjsn834287a91eb1",
+        "X-RapidAPI-Host": "driving-license-verification1.p.rapidapi.com",
+      },
+      data: {
+        method: "dlvalidate",
+        txn_id: "9ujh7gdhgs",
+        clientid: "222",
+        consent: "Y",
+        dlnumber: license,
+        dob: dob,
+      },
+    };
+
+    try {
+      const uuid = await axios.request(options);
+      console.log(uuid.data);
+
+      const driving = await axios.request(detail);
+      console.log(driving.data);
+
+      if (uuid.data.Succeeded && driving.data.Succeeded) {
+        await setDriverInformation({
+          name,
+          phone,
+          model: type,
+          vehicleNumber,
+          dob,
+          license,
+          vehicleName,
+          aadhar: aadharNumber,
+        });
+        setOpen(false);
+      } else {
+        if (driving.data.Succeeded) {
+          setConnectInternet(true);
+        }
+        if (uuid.data.Succeeded) {
+          setConnectInternet1(true);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <div>
+      <Snackbar
+        open={connectInternet}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          severity="error"
+          sx={{
+            width: "100%",
+            fontWeight: "bold",
+            fontFamily: "Josefin Sans",
+          }}
+          onClose={() => {
+            setConnectInternet(false);
+          }}
+        >
+          Invalid Aadhar Number
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={connectInternet1}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          severity="error"
+          sx={{
+            width: "100%",
+            fontWeight: "bold",
+            fontFamily: "Josefin Sans",
+          }}
+          onClose={() => {
+            setConnectInternet1(false);
+          }}
+        >
+          Invalid Driving License
+        </Alert>
+      </Snackbar>
       <Dialog
         style={{ marginTop: "45px" }}
         open={open}
         onClose={async () => {
-          if (name && phone && license) {
-            setOpen(false);
-            await setDriverInformation({
-              name,
-              phone,
-              model: type,
-              vehicleNumber,
-              rcBook: rcbook,
-              license,
-              vehicleName,
-              aadhar: aadharNumber,
-            });
+          if (
+            name &&
+            phone &&
+            license &&
+            dob &&
+            aadharNumber &&
+            vehicleNumber &&
+            vehicleName &&
+            type
+          ) {
+            await AadharValidation();
           }
         }}
       >
@@ -459,16 +568,17 @@ function Driver({ user }) {
           />
           <TextField
             id="outlined-basic"
-            label="RC Number"
+            label="DoB"
             variant="outlined"
+            placeholder="01-01-1000"
             style={{
               width: "250px",
               margin: "10px",
               marginLeft: "13.5px",
             }}
-            value={rcbook}
+            value={dob}
             onChange={(event) => {
-              setRcBook(event.target.value);
+              setDob(event.target.value);
             }}
           />
           <Box>
@@ -515,18 +625,17 @@ function Driver({ user }) {
             variant="contained"
             size="large"
             onClick={async () => {
-              if (name && phone && license) {
-                setOpen(false);
-                await setDriverInformation({
-                  name,
-                  phone,
-                  model: type,
-                  vehicleNumber,
-                  rcBook: rcbook,
-                  license,
-                  vehicleName,
-                  aadhar: aadharNumber,
-                });
+              if (
+                name &&
+                phone &&
+                license &&
+                dob &&
+                aadharNumber &&
+                vehicleNumber &&
+                vehicleName &&
+                type
+              ) {
+                await AadharValidation();
               }
             }}
             style={{
@@ -702,8 +811,12 @@ function Driver({ user }) {
                 Rider : {accept.userAddress.slice(0, 7)}......
                 {accept.userAddress.slice(35)}
               </p>
-              <p style={{ margin: "7px" }}>PickUp : {accept.pickup}</p>
-              <p style={{ margin: "7px" }}>DropOff : {accept.dropoff}</p>
+              <p style={{ margin: "7px" }}>
+                PickUp : {accept.pickup.slice(0, -7)}
+              </p>
+              <p style={{ margin: "7px" }}>
+                DropOff : {accept.dropoff.slice(0, -7)}
+              </p>
               <p style={{ margin: "7px" }}>Amount : {accept.amount} MATIC</p>
               <p style={{ margin: "7px" }}>Rate Rider : </p>
               <Rating
