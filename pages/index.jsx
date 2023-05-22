@@ -477,7 +477,9 @@ function Driver({ user }) {
             vehicleName &&
             type
           ) {
+            setBackDrop(true);
             await AadharValidation();
+            setBackDrop(false);
           }
         }}
       >
@@ -639,7 +641,9 @@ function Driver({ user }) {
                 vehicleName &&
                 type
               ) {
+                setBackDrop(true);
                 await AadharValidation();
+                setBackDrop(false);
               }
             }}
             style={{
