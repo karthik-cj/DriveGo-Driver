@@ -48,9 +48,9 @@ const About = () => {
           create a more sustainable future.
         </p>
         <div className="skills">
-          <span>Web Design</span>
-          <span>Photoshop & Illustrator</span>
-          <span>Coding</span>
+          <span>Blockchain</span>
+          <span>Polygon Matic</span>
+          <span>Smart Contracts</span>
         </div>
       </div>
     </div>

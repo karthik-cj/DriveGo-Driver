@@ -1,7 +1,7 @@
 import Navbar from "../components/Navbar";
 import { getSession, signOut } from "next-auth/react";
 import Button from "@mui/material/Button";
-import { Rating } from "@mui/material";
+import { Rating, Backdrop, CircularProgress } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Head from "next/head";
 import Divider from "@mui/material/Divider";
@@ -234,6 +234,7 @@ function Driver({ user }) {
   const [vehicleName, setVehicleName] = useState("");
   const [bottomSheet, setBottomSheet] = useState(false);
   const [connectInternet, setConnectInternet] = useState(false);
+  const [backDrop, setBackDrop] = useState(false);
   const [connectInternet1, setConnectInternet1] = useState(false);
   const icon = {
     url: "/mapicon.png",
@@ -365,7 +366,7 @@ function Driver({ user }) {
       url: "https://aadhaar-number-verification.p.rapidapi.com/Uidverifywebsvcv1/Uidverify",
       headers: {
         "content-type": "application/x-www-form-urlencoded",
-        "X-RapidAPI-Key": "8fe67656dcmsh04eb6781511e373p1850ecjsn834287a91eb1",
+        "X-RapidAPI-Key": "e2409ea443msh48957783c55ed73p153f98jsnc42e6cdbaf59",
         "X-RapidAPI-Host": "aadhaar-number-verification.p.rapidapi.com",
       },
       data: encodedParams,
@@ -376,7 +377,7 @@ function Driver({ user }) {
       url: "https://driving-license-verification1.p.rapidapi.com/DL/DLDetails",
       headers: {
         "content-type": "application/json",
-        "X-RapidAPI-Key": "8fe67656dcmsh04eb6781511e373p1850ecjsn834287a91eb1",
+        "X-RapidAPI-Key": "e2409ea443msh48957783c55ed73p153f98jsnc42e6cdbaf59",
         "X-RapidAPI-Host": "driving-license-verification1.p.rapidapi.com",
       },
       data: {
@@ -423,6 +424,9 @@ function Driver({ user }) {
 
   return (
     <div>
+      <Backdrop sx={{ color: "#fff", zIndex: 2000 }} open={backDrop}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Snackbar
         open={connectInternet}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
@@ -760,10 +764,12 @@ function Driver({ user }) {
                     className="tick"
                     fontSize="large"
                     onClick={async () => {
+                      setBackDrop(true);
                       await acceptRide({
                         userAddr: data.userAddress,
                         driverAddr: data.driverAddress,
                       });
+                      setBackDrop(false);
                     }}
                     sx={{
                       "&:hover": {
@@ -775,10 +781,12 @@ function Driver({ user }) {
                     className="cross"
                     fontSize="large"
                     onClick={async () => {
+                      setBackDrop(true);
                       await rejectRide({
                         userAddr: data.userAddress,
                         driverAddr: data.driverAddress,
                       });
+                      setBackDrop(false);
                     }}
                     sx={{
                       "&:hover": {
