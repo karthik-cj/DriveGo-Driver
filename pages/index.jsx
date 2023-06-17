@@ -1,6 +1,7 @@
 import Navbar from "../components/Navbar";
 import { getSession, signOut } from "next-auth/react";
 import Button from "@mui/material/Button";
+import BigNumber from "bignumber.js";
 import { Rating, Backdrop, CircularProgress } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Head from "next/head";
@@ -219,6 +220,7 @@ const mapOptions = {
 
 function Driver({ user }) {
   const [value, setValue] = useState(2);
+  const [userDenied, setUserDenied] = useState(false);
   const [accept, setAccept] = useState(null);
   const [data, setData] = useState([]);
   const [currentLatLng, setCurrentLatLng] = useState(null);
@@ -301,6 +303,14 @@ function Driver({ user }) {
       if (details) {
         if (details[2]) ShowMarker(details[2]);
         if (!details[0]) setOpen(true);
+        else {
+          if (new BigNumber(details[9]._hex).toNumber() <= 2) {
+            setUserDenied(true);
+            setTimeout(() => {
+              signOut({ redirect: "/signin" });
+            }, 2000);
+          }
+        }
       }
     }
 
@@ -427,6 +437,24 @@ function Driver({ user }) {
       <Backdrop sx={{ color: "#fff", zIndex: 2000 }} open={backDrop}>
         <CircularProgress color="inherit" />
       </Backdrop>
+      <Snackbar
+        open={userDenied}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          severity="error"
+          sx={{
+            width: "100%",
+            fontWeight: "bold",
+            fontFamily: "Josefin Sans",
+          }}
+          onClose={() => {
+            setUserDenied(false);
+          }}
+        >
+          Access Denied - Low Rating
+        </Alert>
+      </Snackbar>
       <Snackbar
         open={connectInternet}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
