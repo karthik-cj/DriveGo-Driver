@@ -1,25 +1,23 @@
 import "../styles/globals.css";
-import {
-  createClient,
-  configureChains,
-  defaultChains,
-  WagmiConfig,
-} from "wagmi";
+import { createConfig, configureChains, WagmiConfig } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
 import { SessionProvider } from "next-auth/react";
+import { mainnet } from "wagmi/chains";
 
-const { provider, webSocketProvider } = configureChains(defaultChains, [
-  publicProvider(),
-]);
-const client = createClient({
-  provider,
-  webSocketProvider,
+const { publicClient, webSocketPublicClient } = configureChains(
+  [mainnet],
+  [publicProvider()]
+);
+
+const config = createConfig({
   autoConnect: true,
+  publicClient,
+  webSocketPublicClient,
 });
 
 function MyApp({ Component, pageProps }) {
   return (
-    <WagmiConfig client={client}>
+    <WagmiConfig config={config}>
       <SessionProvider session={pageProps.session} refetchInterval={0}>
         <Component {...pageProps} />
       </SessionProvider>

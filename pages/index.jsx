@@ -238,6 +238,7 @@ function Driver({ user }) {
   const [connectInternet, setConnectInternet] = useState(false);
   const [backDrop, setBackDrop] = useState(false);
   const [connectInternet1, setConnectInternet1] = useState(false);
+  const [connectInternet2, setConnectInternet2] = useState(false);
   const icon = {
     url: "/mapicon.png",
     scaledSize: { width: 45, height: 45 },
@@ -425,7 +426,7 @@ function Driver({ user }) {
         }
         if (uuid.data.Succeeded) {
           setConnectInternet1(true);
-        }
+        } else setConnectInternet2(true);
       }
     } catch (error) {
       console.error(error);
@@ -491,16 +492,34 @@ function Driver({ user }) {
           Invalid Driving License
         </Alert>
       </Snackbar>
+      <Snackbar
+        open={connectInternet2}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          severity="error"
+          sx={{
+            width: "100%",
+            fontWeight: "bold",
+            fontFamily: "Josefin Sans",
+          }}
+          onClose={() => {
+            setConnectInternet2(false);
+          }}
+        >
+          Invalid Adhaar, License Or Phone Number
+        </Alert>
+      </Snackbar>
       <Dialog
         style={{ marginTop: "45px" }}
         open={open}
         onClose={async () => {
           if (
             name &&
-            phone &&
+            phone.length === 10 &&
             license &&
-            dob &&
-            aadharNumber &&
+            dob.length === 10 &&
+            aadharNumber.length === 12 &&
             vehicleNumber &&
             vehicleName &&
             type
@@ -508,7 +527,7 @@ function Driver({ user }) {
             setBackDrop(true);
             await AadharValidation();
             setBackDrop(false);
-          }
+          } else setConnectInternet2(true);
         }}
       >
         <DialogTitle
@@ -661,10 +680,10 @@ function Driver({ user }) {
             onClick={async () => {
               if (
                 name &&
-                phone &&
+                phone.length === 10 &&
                 license &&
-                dob &&
-                aadharNumber &&
+                dob.length === 10 &&
+                aadharNumber.length === 12 &&
                 vehicleNumber &&
                 vehicleName &&
                 type
@@ -672,7 +691,7 @@ function Driver({ user }) {
                 setBackDrop(true);
                 await AadharValidation();
                 setBackDrop(false);
-              }
+              } else setConnectInternet2(true);
             }}
             style={{
               fontFamily: "Josefin Sans",
