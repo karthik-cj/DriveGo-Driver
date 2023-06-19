@@ -4,7 +4,6 @@ import { useAccount, useConnect, useSignMessage, useDisconnect } from "wagmi";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useAuthRequestChallengeEvm } from "@moralisweb3/next";
-import isOnline from "is-online";
 import Head from "next/head";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
@@ -16,57 +15,38 @@ function SignIn() {
   const { signMessageAsync } = useSignMessage();
   const { requestChallengeAsync } = useAuthRequestChallengeEvm();
   const { push } = useRouter();
-  const [connectInternet, setConnectInternet] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
 
   const handleRider = async () => {
-    if (!(await isOnline())) {
-      setConnectInternet(true);
-    } else {
-      if (isConnected) {
-        await disconnectAsync();
-      }
+    if (isConnected) {
+      await disconnectAsync();
+    }
 
-      try {
-        const { account, chain } = await connectAsync({
-          connector: new MetaMaskConnector(),
-        });
+    try {
+      const { account, chain } = await connectAsync({
+        connector: new MetaMaskConnector(),
+      });
 
-        const { message } = await requestChallengeAsync({
-          address: account,
-          chainId: chain.id,
-        });
+      const { message } = await requestChallengeAsync({
+        address: account,
+        chainId: chain.id,
+      });
 
-        const signature = await signMessageAsync({ message });
-        const { url } = await signIn("moralis-auth", {
-          message,
-          signature,
-          redirect: false,
-          callbackUrl: "/",
-        });
-        push(url);
-      } catch (error) {
-        setAlertOpen(true);
-      }
+      const signature = await signMessageAsync({ message });
+      const { url } = await signIn("moralis-auth", {
+        message,
+        signature,
+        redirect: false,
+        callbackUrl: "/",
+      });
+      push(url);
+    } catch (error) {
+      setAlertOpen(true);
     }
   };
 
   return (
     <div className="loginBaground">
-      <Snackbar
-        open={connectInternet}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <Alert
-          severity="error"
-          sx={{ width: "100%", fontWeight: "bold", fontFamily: "Josefin Sans" }}
-          onClose={() => {
-            setConnectInternet(false);
-          }}
-        >
-          Connect To Internet !!!
-        </Alert>
-      </Snackbar>
       <Snackbar
         open={alertOpen}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
