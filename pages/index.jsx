@@ -377,7 +377,7 @@ function Driver({ user }) {
       url: "https://aadhaar-number-verification.p.rapidapi.com/Uidverifywebsvcv1/Uidverify",
       headers: {
         "content-type": "application/x-www-form-urlencoded",
-        "X-RapidAPI-Key": "e2409ea443msh48957783c55ed73p153f98jsnc42e6cdbaf59",
+        "X-RapidAPI-Key": process.env.NEXT_PUBLIC_RAPID_API_KEY,
         "X-RapidAPI-Host": "aadhaar-number-verification.p.rapidapi.com",
       },
       data: encodedParams,
@@ -388,7 +388,7 @@ function Driver({ user }) {
       url: "https://driving-license-verification1.p.rapidapi.com/DL/DLDetails",
       headers: {
         "content-type": "application/json",
-        "X-RapidAPI-Key": "e2409ea443msh48957783c55ed73p153f98jsnc42e6cdbaf59",
+        "X-RapidAPI-Key": process.env.NEXT_PUBLIC_RAPID_API_KEY,
         "X-RapidAPI-Host": "driving-license-verification1.p.rapidapi.com",
       },
       data: {
