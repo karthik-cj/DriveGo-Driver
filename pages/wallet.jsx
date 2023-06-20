@@ -8,7 +8,6 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CircularProgress } from "@mui/material";
-import { CardActionArea } from "@mui/material";
 import { Divider } from "@mui/material";
 
 export async function getServerSideProps(context) {
@@ -80,8 +79,7 @@ const Wallet = ({ userBal, user }) => {
       <div id="wallet">
         <h3 style={{ fontWeight: "lighter", color: "#606060" }}>Balance</h3>
         <h1 style={{ marginTop: "-8px" }}>
-          {Math.floor(parseInt(userBal.rawValue, 16) * 1e-18 * 10000) / 10000}{" "}
-          MATIC
+          {(userBal / 1e18).toFixed(2)} MATIC
         </h1>
         <button
           className="addFund"
