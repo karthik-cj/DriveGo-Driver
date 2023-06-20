@@ -2,6 +2,7 @@ import { getSession, signOut } from "next-auth/react";
 import Navbar from "../components/Navbar";
 import ProfileElement from "../components/ProfileElement";
 import Head from "next/head";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { retrieveDriverInformation } from "../services/blockchain";
 import { CircularProgress } from "@mui/material";
@@ -90,16 +91,39 @@ const Profile = ({ user }) => {
             <h3 className="profile_no">+91 {driverInfo[1]}</h3>
             <br />
             <br />
-            <label>Identification</label>
+            <label>Identification :</label>
             <p>{user.id}</p>
-            <label>Address</label>
+            <label>Address :</label>
             <p>{user.address}</p>
-            <label>Domain</label>
+            <label>Domain :</label>
             <p>{user.domain}</p>
-            <label>Chain Id</label>
+            <label>Chain Id :</label>
             <p>{user.chainId}</p>
-            <label>Nonce</label>
-            <p>{user.nonce}</p>
+            <label>Account Statement :</label>
+            <p
+              style={{ fontWeight: "bold", cursor: "pointer" }}
+              onClick={() => {
+                window.open(
+                  `https://mumbai.polygonscan.com/address/${user.address}`,
+                  "_blank"
+                );
+              }}
+            >
+              Polygon Etherscan
+            </p>
+            <Image
+              src="/share.png"
+              alt=""
+              height={17}
+              width={17}
+              style={{
+                marginLeft: "15px",
+                position: "absolute",
+                top: "454px",
+                left: "181px",
+                cursor: "pointer",
+              }}
+            />
             <button
               className="logout"
               onClick={() => {
